@@ -1,0 +1,30 @@
+[debug] [2024-09-25T19:31:49.947Z] ----------------------------------------------------------------------
+[debug] [2024-09-25T19:31:49.951Z] Command:       C:\Program Files\nodejs\node.exe C:\Users\Miami\AppData\Roaming\npm\node_modules\firebase-tools\lib\bin\firebase.js login
+[debug] [2024-09-25T19:31:49.952Z] CLI Version:   13.19.0
+[debug] [2024-09-25T19:31:49.952Z] Platform:      win32
+[debug] [2024-09-25T19:31:49.952Z] Node Version:  v22.5.1
+[debug] [2024-09-25T19:31:49.952Z] Time:          Wed Sep 25 2024 14:31:49 GMT-0500 (hora estándar de Colombia)
+[debug] [2024-09-25T19:31:49.952Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2024-09-25T19:31:49.961Z] >>> [apiv2][query] GET https://firebase-public.firebaseio.com/cli.json [none]
+[info] i  Firebase optionally collects CLI and Emulator Suite usage and error reporting information to help improve our products. Data is collected in accordance with Google's privacy policy (https://policies.google.com/privacy) and is not used to identify you.
+ 
+[debug] [2024-09-25T19:31:50.326Z] <<< [apiv2][status] GET https://firebase-public.firebaseio.com/cli.json 200
+[debug] [2024-09-25T19:31:50.326Z] <<< [apiv2][body] GET https://firebase-public.firebaseio.com/cli.json {"cloudBuildErrorAfter":1594252800000,"cloudBuildWarnAfter":1590019200000,"defaultNode10After":1594252800000,"minVersion":"3.0.5","node8DeploysDisabledAfter":1613390400000,"node8RuntimeDisabledAfter":1615809600000,"node8WarnAfter":1600128000000}
+[info] i  To change your data collection preference at any time, run `firebase logout` and log in again. 
+[info] 
+[info] Visit this URL on this device to log in:
+[info] https://accounts.google.com/o/oauth2/auth?client_id=563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com&scope=email%20openid%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloudplatformprojects.readonly%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Ffirebase%20https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fcloud-platform&response_type=code&state=629983769&redirect_uri=http%3A%2F%2Flocalhost%3A9005
+[info] 
+[info] Waiting for authentication...
+[debug] [2024-09-25T19:33:07.876Z] Unable to open URL: Error: spawn UNKNOWN
+    at ChildProcess.spawn (node:internal/child_process:421:11)
+    at Object.spawn (node:child_process:760:9)
+    at module.exports (C:\Users\Miami\AppData\Roaming\npm\node_modules\firebase-tools\node_modules\open\index.js:114:34)
+    at open (C:\Users\Miami\AppData\Roaming\npm\node_modules\firebase-tools\lib\auth.js:135:5)
+    at Server.<anonymous> (C:\Users\Miami\AppData\Roaming\npm\node_modules\firebase-tools\lib\auth.js:368:13)
+    at Object.onceWrapper (node:events:634:28)
+    at Server.emit (node:events:532:35)
+    at Server.emit (node:domain:488:12)
+    at emitListeningNT (node:net:1945:10)
+    at process.processTicksAndRejections (node:internal/process/task_queues:81:21)
