@@ -1,11 +1,12 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import HomeUsuario from './views/HomeU.vue';
-import HomeVendedor from './views/HomeV.vue';
+import HomeAdoptante from './views/HomeA.vue';
+import HomeRefugio from './views/HomeR.vue';
 import Index from './views/Index.vue';
 import UserLogin from './views/Login.vue';
 import UserPets from './views/Pets.vue';
-import ProfileVendedor from './views/ProfileV.vue';
+import ProfileRefugio from './views/ProfileR.vue';
 import CustomerReviews from './views/Review.vue';
+import CalendarAdoptante from './views/CalendarA.vue';
 
 
 const routes = [
@@ -30,18 +31,25 @@ const routes = [
     component: CustomerReviews
   },
   {
-    path: '/HomeV',
-    name: 'HomeV',
-    component: HomeVendedor
+    path: '/HomeR',
+    name: 'HomeR',
+    component: HomeRefugio
+  },
+  { path: '/HomeA',
+    name: 'HomeA',
+    component: HomeAdoptante
   },
   {
-    path: '/profileV',
-    name: 'ProfileV',
-    component: ProfileVendedor
+    path: '/profileR',
+    name: 'ProfileR',
+    component: ProfileRefugio
   },
-  { path: '/HomeU',
-    name: 'HomeU',
-    component: HomeUsuario },
+
+  { path: '/CalendarA',
+    name: 'CalendarA',
+    component: CalendarAdoptante
+  }
+
 
 ];
 

@@ -10,6 +10,6 @@ export default {
 };
 </script>
 
-<style>
-/* Tus estilos */
+<style scoped>
+
 </style>

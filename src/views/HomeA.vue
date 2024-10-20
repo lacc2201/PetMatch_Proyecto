@@ -118,7 +118,7 @@
 
 <script>
 export default {
-    name: "HomeUsuario", // Cambia el nombre aquí
+    name: "HomeAdoptante", // Cambia el nombre aquí
     mounted() {
         // Aquí puedes agregar la lógica del carrusel usando JavaScript o un plugin de Vue
         const imagesContainer = document.querySelector('.carousel-images');

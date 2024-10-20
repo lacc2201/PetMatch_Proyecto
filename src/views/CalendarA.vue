@@ -1,107 +1,78 @@
 <template>
     <div>
-        <!-- Header -->
         <header>
             <div class="logo">
                 <img src="../assets/logopetmatch.png" alt="PetMatch Logo">
             </div>
             <nav>
-                <router-link to="/HomeV">INICIO</router-link>
-                <router-link to="/Pets">MIS MASCOTAS</router-link>
-                <router-link to="/Reviews">RESEÑAS</router-link>
-                <router-link to="/profileV">PERFIL VENDEDOR</router-link>
+                <router-link to="/">INICIO</router-link>
+                <router-link to="/PetsA">PETS</router-link>
+                <router-link to="/ReviewsA">RESEÑAS</router-link>
             </nav>
-            <div class="header-icons">
-                <a href="../views/calendar.html"><img src="../assets/icon-calendar.png" alt="Calendario"></a>
-                <a href="../views/profileV.html"><img id="header-profile-icon" src="../assets/icon-profile.png"
-                        alt="Perfil"></a>
-            </div>
             <div class="contact-info">
-                <!-- Botón para abrir el modal -->
-                <a @click="showLogoutModal = true">Cerrar Sesión</a>
-                <!-- Modal de Cerrar Sesión -->
-                <div v-if="showLogoutModal" id="logoutModal" class="modal">
-                    <div class="modal-content">
-                        <h2>¿Estás seguro de que deseas cerrar sesión?</h2>
-                        <button @click="logout">Confirmar</button>
-                        <button @click="showLogoutModal = false">Cancelar</button>
-                    </div>
-                </div>
+                <router-link to="/login" class="contact-button">Registrarse/Iniciar Sesión</router-link>
             </div>
         </header>
 
-        <!-- Carrusel de imágenes -->
-        <section class="carousel">
-            <div class="carousel-images">
-                <img src="../assets/carrusel3.jpg" alt="Imagen 1" />
-                <img src="../assets/carrusel2.jpg" alt="Imagen 2" />
-                <img src="../assets/carrusel3.jpg" alt="Imagen 3" />
-                <img src="../assets/carrusel2.jpg" alt="Imagen 4" />
-            </div>
-        </section>
+        <div id="calendar-container">
+            <div id="event-list-container">
+                <h2>Eventos</h2>
+                <ul id="event-list">
+                    <li v-for="event in events" :key="event.id" :style="{ backgroundColor: event.color }" class="event"
+                        draggable="true" @dragstart="startDrag(event)">
+                        {{ event.name }}
+                    </li>
+                </ul>
 
-        <div>
-            <br /><br />
-        </div>
+                <div id="create-event-container">
+                    <h3>Crear Evento</h3>
+                    <input v-model="newEventName" type="text" placeholder="Título Evento" />
+                    <select v-model="newEventColor">
+                        <option value="#4CAF50">Verde</option>
+                        <option value="#FF9800">Naranja</option>
+                        <option value="#F44336">Rojo</option>
+                        <option value="#2196F3">Azul</option>
+                        <option value="#9C27B0">Morado</option>
+                        <option value="#00BCD4">Cyan</option>
+                        <option value="#FFC107">Amarillo</option>
+                        <option value="#E91E63">Rosa</option>
+                    </select>
+                    <button @click="addEvent">Agregar</button>
+                </div>
+            </div>
 
-        <!-- Submenú -->
-        <section class="sub-menu">
-            <a href="#"><img src="../assets/iconges.png" alt="Icono"> Gestión de Ventas</a>
-            <a href="#"><img src="../assets/icon2.png" alt="Icono"> Reseñas</a>
-            <a href="#"><img src="../assets/icon3.png" alt="Icono"> Mensajes</a>
-        </section>
+            <div id="calendar-table-container">
+                <div id="calendar-navigation">
+                    <button @click="prevMonth">&lt;</button>
+                    <span>{{ currentMonthName }} {{ currentYear }}</span>
+                    <button @click="nextMonth">&gt;</button>
+                </div>
 
-        <!-- Sección de contenido con texto e imagen -->
-        <section class="content-section">
-            <div class="text">
-                <h2 class="title">¡Administra tus Ventas con PetMatch!</h2>
-                <p>Bienvenido a tu panel de vendedor en PetMatch. Aquí podrás gestionar tus productos, ver estadísticas
-                    de ventas y mejorar la experiencia de tus clientes. Mantén tu catálogo actualizado y responde a las
-                    reseñas para mejorar tu reputación.</p>
-            </div>
-            <div class="image-box">
-                <img src="../assets/carrusel5.png" alt="Imagen de mascotas" />
-            </div>
-        </section>
-
-        <!-- Sección con íconos circulares -->
-        <section class="icon-section">
-            <div class="icon-box">
-                <div class="icon">🐾</div>
-                <div class="icon-description">Reseñas de Clientes</div>
-                <p>Responde a los comentarios de los dueños felices y construye confianza para que más mascotas
-                    encuentren su hogar perfecto.</p>
-            </div>
-            <div class="icon-box">
-                <div class="icon">🦴</div>
-                <div class="icon-description">Control de Mascotas</div>
-                <p>Gestiona tu inventario de mascotas y mantén el catálogo actualizado con los nuevos peluditos en
-                    venta.</p>
-            </div>
-            <div class="icon-box">
-                <div class="icon">🐕</div>
-                <div class="icon-description">Seguimiento de Adopciones</div>
-                <p>Haz el seguimiento de las ventas para asegurarte de que cada mascota llegue a su nuevo hogar a
-                    tiempo.</p>
-            </div>
-            <div class="icon-box">
-                <div class="icon">🎨</div>
-                <div class="icon-description">Configuración de Perfil</div>
-                <p>Personaliza tu perfil, ajusta las preferencias de tu tienda y destaca tus mascotas favoritas para
-                    captar la atención de los compradores.</p>
-            </div>
-        </section>
-
-        <!-- Modal de Cerrar Sesión -->
-        <div v-if="showLogoutModal" id="logoutModal" class="modal">
-            <div class="modal-content">
-                <h2>¿Estás seguro de que deseas cerrar sesión?</h2>
-                <button id="confirmLogoutBtn" @click="logout">Confirmar</button>
-                <button id="cancelLogoutBtn" @click="showLogoutModal = false">Cancelar</button>
+                <table id="calendar-table">
+                    <thead>
+                        <tr>
+                            <th>Dom</th>
+                            <th>Lun</th>
+                            <th>Mar</th>
+                            <th>Mié</th>
+                            <th>Jue</th>
+                            <th>Vie</th>
+                            <th>Sáb</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="week in calendarWeeks" :key="week[0].date">
+                            <td v-for="day in week" :key="day.date" :class="{ 'other-month': day.isOtherMonth }"
+                                @dragover.prevent @drop="dropEvent(day)">
+                                {{ day.day }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
-        <!-- Footer -->
+
         <footer>
             <div class="footer-container">
                 <div class="footer-section">
@@ -133,48 +104,203 @@
         </footer>
     </div>
 </template>
-
 <script>
 export default {
-    name: "HomeVendedor",
+    name: "CalendarAdoptante",
     data() {
         return {
-            showLogoutModal: false, // Controla la visibilidad del modal
+            currentDate: new Date(),
+            newEventName: "",
+            newEventColor: "#4CAF50",
+            events: [
+                { id: 1, name: "Cita Perro", color: "#4CAF50" },
+                { id: 2, name: "Cita Gato", color: "#FF9800" },
+                { id: 3, name: "Descanso", color: "#F44336" },
+                { id: 4, name: "Buscar Mascotas", color: "#2196F3" }
+            ],
+            draggedEvent: null,
         };
     },
-    methods: {
-        logout() {
-            // Redirigir al usuario a la página de inicio
-            this.$router.push('/');
+    computed: {
+        currentYear() {
+            return this.currentDate.getFullYear();
+        },
+        currentMonth() {
+            return this.currentDate.getMonth();
+        },
+        currentMonthName() {
+            const monthNames = [
+                "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+                "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+            ];
+            return monthNames[this.currentMonth];
+        },
+        calendarWeeks() {
+            const firstDayIndex = new Date(this.currentYear, this.currentMonth, 1).getDay();
+            const lastDay = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
+            const prevLastDay = new Date(this.currentYear, this.currentMonth, 0).getDate();
+
+            let days = [];
+            let week = [];
+            // Fill previous month's days
+            for (let i = firstDayIndex; i > 0; i--) {
+                week.push({ day: prevLastDay - i + 1, isOtherMonth: true });
+            }
+
+            // Fill current month's days
+            for (let i = 1; i <= lastDay; i++) {
+                if (week.length === 7) {
+                    days.push(week);
+                    week = [];
+                }
+                week.push({ day: i, isOtherMonth: false });
+            }
+
+            // Fill next month's days to complete the last week
+            const nextDays = 7 - week.length;
+            for (let i = 1; i <= nextDays; i++) {
+                week.push({ day: i, isOtherMonth: true });
+            }
+            days.push(week);
+
+            return days;
         },
     },
-    mounted() {
-        // Lógica del carrusel
-        const imagesContainer = document.querySelector('.carousel-images');
-        const images = document.querySelectorAll('.carousel-images img');
-        let index = 0;
-
-        function slideShow() {
-            index++;
-            if (index >= images.length) {
-                index = 0;
+    methods: {
+        renderCalendar() {
+            // Se puede omitir ya que el calendario es reactivo.
+        },
+        addEvent() {
+            if (this.newEventName.trim()) {
+                this.events.push({
+                    id: this.events.length + 1,
+                    name: this.newEventName.trim(),
+                    color: this.newEventColor,
+                });
+                this.newEventName = "";
             }
-            imagesContainer.style.transform = `translateX(-${index * 100}%)`;
-        }
-
-        // Cambia de imagen automáticamente cada 3 segundos
-        setInterval(slideShow, 3000);
-    }
+        },
+        startDrag(event) {
+            this.draggedEvent = event;
+        },
+        dropEvent(day) {
+            if (this.draggedEvent && !day.isOtherMonth) {
+                const eventCopy = { ...this.draggedEvent };
+                // Aquí puedes agregar lógica para asociar el evento con la fecha.
+                console.log(`Evento ${eventCopy.name} asignado al día ${day.day}`);
+                this.draggedEvent = null;
+            }
+        },
+        prevMonth() {
+            this.currentDate.setMonth(this.currentDate.getMonth() - 1);
+        },
+        nextMonth() {
+            this.currentDate.setMonth(this.currentDate.getMonth() + 1);
+        },
+    },
 };
 </script>
+<style>
+#contact-info {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
 
-<style scoped>
-/* Define la fuente principal del sitio */
-body {
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    margin: 0;
+#calendar-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px;
+}
+
+#event-list-container {
+    width: 25%;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+#event-list-container ul {
+    list-style: none;
     padding: 0;
+}
+
+.event {
+    margin: 5px 0;
+    padding: 5px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.event.dragging {
+    opacity: 0.5;
+}
+
+#create-event-container {
+    margin-top: 20px;
+}
+
+#create-event-container input[type="text"] {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+#create-event-container select {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+#create-event-container button {
+    width: 100%;
+    padding: 5px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#create-event-container button:hover {
+    background-color: #45a049;
+}
+
+#calendar-table {
+    width: 70%;
+    border-collapse: collapse;
+    margin-left: 170px;
+}
+
+#calendar-table th,
+#calendar-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    vertical-align: top;
+}
+
+#calendar-table th {
+    font-weight: bold;
     background-color: #f2f2f2;
+    text-align: center;
+    padding: 10px;
+}
+
+.droppable {
+    min-height: 100px;
+    position: relative;
+}
+
+.event-inside {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    width: 90%;
 }
 
 /* Estilos para los iconos en el header */
@@ -192,8 +318,47 @@ body {
 
 .header-icons img {
     width: 70px;
+    /* Aumentar el tamaño de los íconos */
     height: 70px;
+    /* Aumentar el tamaño de los íconos */
     cursor: pointer;
+}
+
+#calendar-table-container {
+    width: 100%;
+    /* Ajusta según el tamaño que desees */
+    margin: 0 auto;
+    /* Centra el calendario */
+
+}
+
+#calendar-navigation {
+    display: flex;
+    justify-content: center;
+    /* Centra los elementos horizontalmente */
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+#calendar-navigation button {
+    background-color: transparent;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#month-name {
+    margin: 0 15px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
 }
 
 /* Estilo para el header */
@@ -224,7 +389,6 @@ header::after {
     border-radius: 100% 100% 0 0;
     z-index: 1;
 }
-
 
 .logo img {
     width: 185px;

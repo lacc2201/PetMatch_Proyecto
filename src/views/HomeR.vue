@@ -3,84 +3,113 @@
         <!-- Header -->
         <header>
             <div class="logo">
-                <img src="../assets/logopetmatch.png" alt="PetMatch Logo" />
+                <img src="../assets/logopetmatch.png" alt="PetMatch Logo">
             </div>
             <nav>
-                <router-link to="/">INICIO</router-link>
-                <router-link to="/Pets">PETS</router-link>
+                <router-link to="/HomeR">INICIO</router-link>
+                <router-link to="/PetsR">MIS MASCOTAS</router-link>
                 <router-link to="/Reviews">RESEÑAS</router-link>
+                <router-link to="/profileR">PERFIL REFUGIO</router-link>
             </nav>
+            
+            <div class="header-icons">
+                <a href="../views/calendar.html"><img src="../assets/icon-calendar.png" alt="Calendario"></a>
+                <a href="../views/profileV.html"><img id="header-profile-icon" src="../assets/icon-profile.png"
+                        alt="Perfil"></a>
+            </div>
             <div class="contact-info">
-                <router-link to="/login" class="contact-button">Registrarse/Iniciar Sesión</router-link>
+                <!-- Botón para abrir el modal -->
+                <a @click="showLogoutModal = true">Cerrar Sesión</a>
+                <!-- Modal de Cerrar Sesión -->
+                <div v-if="showLogoutModal" id="logoutModal" class="modal">
+                    <div class="modal-content">
+                        <h2>¿Estás seguro de que deseas cerrar sesión?</h2>
+                        <button @click="logout">Confirmar</button>
+                        <button @click="showLogoutModal = false">Cancelar</button>
+                    </div>
+                </div>
             </div>
         </header>
 
-        <main>
-            <div class="contenedor__todo">
-                <div class="caja__trasera">
-                    <div class="caja__trasera-login">
-                        <h3>¿Ya eres parte de nuestra familia?</h3>
-                        <p>Inicia sesión y encuentra el compañero ideal para tu hogar</p>
-                        <button id="btn__iniciar-sesion" @click="mostrarLogin">Iniciar Sesión</button>
-                    </div>
-                    <div class="caja__trasera-register">
-                        <h3>¿Aún no eres miembro?</h3>
-                        <p>Únete a nosotros y encuentra a tu compañero ideal</p>
-                        <button id="btn__registrarse" @click="mostrarRegistro">Regístrate</button>
-                    </div>
-                </div>
-
-                <!-- Formulario de Login y registro -->
-                <div class="contenedor__login-register">
-                    <!-- Login -->
-                    <form id="login-form" class="formulario__login" v-show="mostrarLoginForm"
-                        @submit.prevent="validarFormularioLogin">
-                        <h2>🐾 Iniciar Sesión 🐾</h2>
-                        <input type="email" id="login-email" placeholder="Correo Electrónico" v-model="loginEmail"
-                            required />
-                        <div class="password-container">
-                            <input type="password" id="login-password" placeholder="Contraseña" v-model="loginPassword"
-                                required />
-                            <button type="button" class="toggle-password"
-                                @click="togglePassword('login-password')">👁️</button>
-                        </div>
-                        <button type="submit">Entrar</button>
-                    </form>
-
-                    <!-- Register -->
-                    <form class="formulario__register" v-show="mostrarRegisterForm"
-                        @submit.prevent="validarFormularioRegistro">
-                        <h2>🐶 Regístrate 🐱</h2>
-                        <input type="text" id="register-nombre" placeholder="Nombre Completo" v-model="registerNombre"
-                            required />
-                        <input type="email" id="register-email" placeholder="Correo Electrónico" v-model="registerEmail"
-                            required />
-                        <input type="text" id="register-direccion" placeholder="Dirección" v-model="registerDireccion"
-                            required />
-                        <input type="tel" id="register-telefono" placeholder="Teléfono Celular"
-                            v-model="registerTelefono" required />
-                        <div class="password-container">
-                            <input type="password" id="register-password" placeholder="Contraseña"
-                                v-model="registerPassword" required />
-                            <button type="button" class="toggle-password"
-                                @click="togglePassword('register-password')">👁️</button>
-                        </div>
-                        <button type="submit">Regístrate</button>
-                    </form>
-                </div>
+        <!-- Carrusel de imágenes -->
+        <section class="carousel">
+            <div class="carousel-images">
+                <img src="../assets/carrusel3.jpg" alt="Imagen 1" />
+                <img src="../assets/carrusel2.jpg" alt="Imagen 2" />
+                <img src="../assets/carrusel3.jpg" alt="Imagen 3" />
+                <img src="../assets/carrusel2.jpg" alt="Imagen 4" />
             </div>
-        </main>
+        </section>
 
-        <br /><br /><br /><br />
+        <div>
+            <br /><br />
+        </div>
+
+        <!-- Submenú -->
+        <section class="sub-menu">
+            <a href="#"><img src="../assets/iconges.png" alt="Icono"> Gestión de Ventas</a>
+            <a href="#"><img src="../assets/icon2.png" alt="Icono"> Reseñas</a>
+            <a href="#"><img src="../assets/icon3.png" alt="Icono"> Mensajes</a>
+        </section>
+
+        <!-- Sección de contenido con texto e imagen -->
+        <section class="content-section">
+            <div class="text">
+                <h2 class="title">¡Administra tus Ventas con PetMatch!</h2>
+                <p>Bienvenido a tu panel de REFUGIO en PetMatch. Aquí podrás gestionar tus productos, ver estadísticas
+                    de ventas y mejorar la experiencia de tus clientes. Mantén tu catálogo actualizado y responde a las
+                    reseñas para mejorar tu reputación.</p>
+            </div>
+            <div class="image-box">
+                <img src="../assets/carrusel5.png" alt="Imagen de mascotas" />
+            </div>
+        </section>
+
+        <!-- Sección con íconos circulares -->
+        <section class="icon-section">
+            <div class="icon-box">
+                <div class="icon">🐾</div>
+                <div class="icon-description">Reseñas de Adoptantes</div>
+                <p>Responde a los comentarios de los dueños felices y construye confianza para que más mascotas
+                    encuentren su hogar perfecto.</p>
+            </div>
+            <div class="icon-box">
+                <div class="icon">🦴</div>
+                <div class="icon-description">Control de Mascotas</div>
+                <p>Gestiona tu inventario de mascotas y mantén el catálogo actualizado con los nuevos peluditos en
+                    venta.</p>
+            </div>
+            <div class="icon-box">
+                <div class="icon">🐕</div>
+                <div class="icon-description">Seguimiento de Adopciones</div>
+                <p>Haz el seguimiento de las ventas para asegurarte de que cada mascota llegue a su nuevo hogar a
+                    tiempo.</p>
+            </div>
+            <div class="icon-box">
+                <div class="icon">🎨</div>
+                <div class="icon-description">Configuración de Perfil</div>
+                <p>Personaliza tu perfil, ajusta las preferencias de tu tienda y destaca tus mascotas favoritas para
+                    captar la atención de los compradores.</p>
+            </div>
+        </section>
+
+        <!-- Modal de Cerrar Sesión -->
+        <div v-if="showLogoutModal" id="logoutModal" class="modal">
+            <div class="modal-content">
+                <h2>¿Estás seguro de que deseas cerrar sesión?</h2>
+                <button id="confirmLogoutBtn" @click="logout">Confirmar</button>
+                <button id="cancelLogoutBtn" @click="showLogoutModal = false">Cancelar</button>
+            </div>
+        </div>
+
+        <!-- Footer -->
         <footer>
             <div class="footer-container">
                 <div class="footer-section">
                     <h3>🐾 ¡Estamos aquí para ayudarte! 🐾</h3>
-                    <p>
-                        📅 <strong>Lunes a Viernes:</strong> 9:00 AM - 7:00 PM<br />
+                    <p>📅 <strong>Lunes a Viernes:</strong> 9:00 AM - 7:00 PM<br />
                         🕒 <strong>Sábados:</strong> 10:00 AM - 2:00 PM<br />
-                        🚪 <strong>Domingos y festivos:</strong> Cerrado, ¡nos vemos el lunes!
-                    </p>
+                        🚪 <strong>Domingos y festivos:</strong> Cerrado, ¡nos vemos el lunes!</p>
                     <p class="pet-quote">"Porque un hogar no está completo sin una pata que lo haga feliz."</p>
                 </div>
 
@@ -99,133 +128,46 @@
             </div>
             <div class="footer-bottom">
                 <p>🐾 "La felicidad se mide en colitas que se mueven". © 2024 PetMatch 🐾</p>
-                <p>
-                    Con amor y dedicación | <a href="#">Política de Privacidad</a> | <a href="#">Términos y
-                        Condiciones</a>
-                </p>
+                <p>Con amor y dedicación | <a href="#">Política de Privacidad</a> | <a href="#">Términos y
+                        Condiciones</a></p>
             </div>
         </footer>
     </div>
 </template>
 
 <script>
-import { auth, db } from "@/firebaseConfig"; // Asegúrate de importar tu configuración de Firebase
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc, getDoc } from "firebase/firestore"; // Agrega getDoc aquí
-
 export default {
-    name: 'UserLogin',
+    name: "HomeRefugio",
     data() {
         return {
-            mostrarLoginForm: true,
-            mostrarRegisterForm: false,
-            // Datos para el login
-            loginEmail: "",
-            loginPassword: "",
-            loginRol: "", // Para el campo de rol en login (aunque este se puede definir automáticamente)
-            // Datos para el registro
-            registerNombre: "",
-            registerEmail: "",
-            registerDireccion: "",
-            registerTelefono: "",
-            registerPassword: "",
+            showLogoutModal: false, // Controla la visibilidad del modal
         };
     },
     methods: {
-        // Muestra el formulario de login
-        mostrarLogin() {
-            this.mostrarLoginForm = true;
-            this.mostrarRegisterForm = false;
-        },
-
-        // Muestra el formulario de registro
-        mostrarRegistro() {
-            this.mostrarLoginForm = false;
-            this.mostrarRegisterForm = true;
-        },
-
-        async validarFormularioLogin() {
-            if (!this.loginEmail || !this.loginPassword) {
-                alert("Todos los campos son obligatorios.");
-                return false;
-            }
-
-            try {
-                // Inicia sesión con Firebase Authentication
-                const userCredential = await signInWithEmailAndPassword(auth, this.loginEmail, this.loginPassword);
-                const user = userCredential.user;
-
-                // Recupera la información del usuario desde Firestore usando el UID
-                const userDoc = await getDoc(doc(db, "usuarios", user.uid));
-
-                if (userDoc.exists()) {
-                    const userData = userDoc.data();
-
-                    // Verifica el rol del usuario y redirige según corresponda
-                    if (userData.rol === "Adoptante") {
-                        window.location.href = '/HomeA';  // Página del adoptante
-                    } else if (userData.rol === "Refugio") {
-                        window.location.href = '/HomeR';  // Página del refugio
-                    } else if (userData.rol === "Administrador") {
-                        window.location.href = '/Admin';  // Página del administrador
-                    } else {
-                        alert("Rol no reconocido.");
-                    }
-                } else {
-                    alert("Error: No se encontró el usuario en la base de datos.");
-                }
-
-            } catch (error) {
-                alert("Error en el inicio de sesión: " + error.message);
-            }
-        },
-
-        // Validación del formulario de registro y almacenamiento en la tabla usuarios
-        async validarFormularioRegistro() {
-            if (!this.registerNombre || !this.registerEmail || !this.registerDireccion || !this.registerTelefono || !this.registerPassword) {
-                alert("Todos los campos son obligatorios.");
-                return false;
-            }
-
-            try {
-                // Registrar el usuario en Firebase Authentication
-                const userCredential = await createUserWithEmailAndPassword(auth, this.registerEmail, this.registerPassword);
-                const user = userCredential.user;
-
-                // Guardar la información del usuario en Firestore (tabla usuarios)
-                await setDoc(doc(db, "usuarios", user.uid), {
-                    nombre: this.registerNombre,
-                    email: this.registerEmail,
-                    direccion: this.registerDireccion,
-                    telefono: this.registerTelefono,
-                    rol: 'Adoptante', // Rol por defecto para los nuevos usuarios
-                    fecha_registro: new Date(), // Fecha de registro del usuario
-                });
-
-                // Aquí se muestra el mensaje de éxito al completar el registro
-                alert("Registro exitoso. Ahora inicia sesión.");
-                this.mostrarLogin(); // Cambiar a la vista de login
-
-            } catch (error) {
-                // Si ocurre un error, mostrar el mensaje correspondiente
-                alert("Error en el registro: " + error.message);
-            }
-        },
-
-        // Función para mostrar/ocultar contraseña
-        togglePassword(inputId) {
-            const input = document.getElementById(inputId);
-            if (input.type === "password") {
-                input.type = "text";
-            } else {
-                input.type = "password";
-            }
+        logout() {
+            // Redirigir al usuario a la página de inicio
+            this.$router.push('/');
         },
     },
+    mounted() {
+        // Lógica del carrusel
+        const imagesContainer = document.querySelector('.carousel-images');
+        const images = document.querySelectorAll('.carousel-images img');
+        let index = 0;
+
+        function slideShow() {
+            index++;
+            if (index >= images.length) {
+                index = 0;
+            }
+            imagesContainer.style.transform = `translateX(-${index * 100}%)`;
+        }
+
+        // Cambia de imagen automáticamente cada 3 segundos
+        setInterval(slideShow, 3000);
+    }
 };
 </script>
-
-
 
 <style scoped>
 /* Define la fuente principal del sitio */
@@ -234,6 +176,25 @@ body {
     margin: 0;
     padding: 0;
     background-color: #f2f2f2;
+}
+
+/* Estilos para los iconos en el header */
+.header-icons {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.header-icons a {
+    display: inline-block;
+    margin-left: 15px;
+}
+
+.header-icons img {
+    width: 70px;
+    height: 70px;
+    cursor: pointer;
 }
 
 /* Estilo para el header */
@@ -250,14 +211,13 @@ header {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     height: 120px;
-    /* Reduce el tamaño del área azul */
 }
 
 /* Estilo de nube en la parte inferior del header */
 header::after {
     content: '';
     position: absolute;
-    bottom: -50px;
+    bottom: -60px;
     left: 0;
     width: 90%;
     height: 80px;
@@ -266,8 +226,9 @@ header::after {
     z-index: 1;
 }
 
+
 .logo img {
-    width: 150px;
+    width: 185px;
     height: auto;
     z-index: 2;
     transition: transform 0.3s ease;
@@ -492,18 +453,14 @@ nav a:hover {
     font-weight: bold;
     color: #ffffff;
     /* Color del texto blanco */
-    background: #4a90e2;
+    background: #a2c2e3;
     /* Fondo azul claro */
     border-radius: 10px;
     /* Bordes más redondeados */
     padding: 10px 20px;
     /* Espaciado interno reducido */
     text-align: center;
-    margin: 0 auto;
-    /* Centrar horizontalmente */
     margin-bottom: 20px;
-    max-width: 600px;
-    /* Limitar el ancho máximo */
     position: relative;
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -541,7 +498,6 @@ nav a:hover {
     border-radius: 50%;
     z-index: 1;
 }
-
 
 @keyframes shadowPulse {
 
@@ -718,16 +674,16 @@ footer {
 }
 
 .footer-section img {
-    width: 165px;
+    width: 205px;
     /* Aumentar el tamaño de la imagen del logo */
-    margin-bottom: -10px;
+    margin-bottom: -5px;
     /* Reducir el margen inferior para acercar los íconos al logo */
 }
 
 .social-icons {
     display: flex;
     justify-content: center;
-    margin-top: -40px;
+    margin-top: -25px;
     /* Reducir el margen superior para acercar los íconos al logo */
 }
 
@@ -808,9 +764,7 @@ footer {
 
 /* Animación de parpadeo en las patas */
 .paw-icon {
-    font-size: 30px;
-    color: lightgray;
-    cursor: pointer;
+    animation: paw-blink 1.5s infinite alternate;
 }
 
 @keyframes paw-blink {
@@ -862,12 +816,9 @@ main {
     display: flex;
     justify-content: center;
     -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(80px);
-    background: rgba(0, 47, 108, 0.95);
-    /* Azul oscuro con opacidad alta */
-    background-image: url('../assets/fondo-caja.png');
-    background-size: cover;
-    background-position: center;
+    backdrop-filter: blur(10px);
+    background-color: rgba(255, 223, 0, 0.6);
+    /* Amarillo claro con opacidad */
     border-radius: 15px;
     /* Bordes redondeados */
     margin: auto;
@@ -876,7 +827,7 @@ main {
 
 .caja__trasera div {
     margin: 100px 50px;
-    color: #fff;
+    color: #002f6c;
     /* Azul oscuro para el texto */
     transition: all 500ms;
 }
@@ -926,12 +877,12 @@ main {
 
 .caja__trasera button {
     padding: 10px 50px;
-    border: 2px solid #4a90e2;
+    border: 2px solid #002f6c;
     /* Azul oscuro */
     font-size: 16px;
-    background: transparent;
+    background: #f9c74f;
     /* Amarillo dorado */
-    color: #fff;
+    color: #002f6c;
     /* Azul oscuro */
     font-weight: 600;
     cursor: pointer;
@@ -944,7 +895,7 @@ main {
 .caja__trasera button:hover {
     background: #f9c74f;
     /* Amarillo dorado */
-    color: #4a90e2;
+    color: #002f6c;
     /* Azul oscuro */
 }
 
@@ -1160,8 +1111,7 @@ form select option {
     font-size: 2rem;
     font-weight: bold;
     margin-bottom: 20px;
-    color: #ffffff;
-    margin: 0;
+    color: #333;
 }
 
 .reviews-section p1 {
@@ -1175,9 +1125,6 @@ form select option {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
 }
 
 .review-card {
@@ -1186,8 +1133,6 @@ form select option {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
     text-align: left;
-    width: 30%;
-    margin-bottom: 20px;
 }
 
 .review-header {
@@ -1196,19 +1141,10 @@ form select option {
     margin-bottom: 20px;
 }
 
-/* Estilo para la foto del cliente en las reseñas */
 .client-photo {
-    width: 80px;
-    /* Ajusta el tamaño según el diseño */
-    height: 80px;
-    /* Mantén el aspecto cuadrado */
     border-radius: 50%;
-    /* Asegura que la imagen sea circular */
     margin-right: 15px;
-    object-fit: cover;
-    /* Mantiene la proporción de la imagen */
 }
-
 
 .client-info h3 {
     margin: 0;
@@ -1231,37 +1167,17 @@ form select option {
     margin-left: 5px;
 }
 
-/* Estilo para el contenido de la reseña */
 .review-content {
     display: flex;
-    align-items: center;
-    gap: 20px;
-    /* Espacio entre la imagen y la información */
-}
-
-/* Estilo para la foto de la mascota en las reseñas */
-.pet-photo img {
-    width: 150px;
-    /* Ajusta el tamaño según el diseño */
-    height: auto;
-    /* Mantiene la proporción de la imagen */
-    border-radius: 10px;
-    /* Añade bordes redondeados si es necesario */
-    object-fit: cover;
-    /* Mantiene la proporción de la imagen */
-}
-
-/* Estilo para la información de la mascota */
-.pet-info {
-    flex: 1;
-    /* Permite que la información ocupe el espacio restante */
-    display: flex;
     flex-direction: column;
-    gap: 10px;
-    /* Espacio entre los elementos dentro de la información */
 }
 
-/* Ajusta el tamaño del texto en la información de la mascota */
+.pet-photo img {
+    width: 100%;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
 .pet-info h4 {
     font-size: 1.4rem;
     margin-bottom: 10px;
@@ -1369,38 +1285,5 @@ form select option {
 
 .review-form button:hover {
     background-color: #f9c74f;
-}
-
-.paw-rating label {
-    font-size: 24px;
-    color: #ccc;
-    cursor: pointer;
-}
-
-.paw-rating input[type="radio"]:checked~label {
-    color: #f39c12;
-}
-
-.review-row {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    margin-bottom: 20px;
-}
-
-input[type="radio"] {
-    display: none;
-}
-
-input[type="radio"]:checked+.paw-icon {
-    color: orange;
-}
-
-.paw-icon:hover {
-    color: darkorange;
-}
-
-.paw-icon.active {
-    color: orange;
 }
 </style>

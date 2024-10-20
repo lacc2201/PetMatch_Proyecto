@@ -97,7 +97,7 @@
 
 <script>
 export default {
-    name: "ProfileVendedor"
+    name: "ProfileRefugio"
 };
 </script>
 
