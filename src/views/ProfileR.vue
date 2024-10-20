@@ -6,14 +6,19 @@
                 <img src="../assets/logopetmatch.png" alt="PetMatch Logo">
             </div>
             <nav>
-                <router-link to="/HomeV">INICIO</router-link>
-                <router-link to="/Pets">PETS</router-link>
+                <router-link to="/HomeR">INICIO</router-link>
+                <router-link to="/Pets">MIS MASCOTAS</router-link>
                 <router-link to="/Reviews">RESEÑAS</router-link>
-                <router-link to="/profileV">PERFIL VENDEDOR</router-link>
             </nav>
+            <div class="header-icons">
+                <a href="../views/calendar.html"><img src="../assets/icon-calendar.png" alt="Calendario"></a>
+                <router-link to="/profileR"><img id="header-profile-icon" src="../assets/icon-profile.png"
+                        alt="Perfil"></router-link>
+            </div>
             <div class="contact-info">
                 <a href="#" class="contact-button" id="logoutBtn" @click="showLogoutModal = true">Cerrar Sesión</a>
             </div>
+            
         </header>
 
         <div id="profile-container">

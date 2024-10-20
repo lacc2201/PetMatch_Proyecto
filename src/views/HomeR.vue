@@ -9,13 +9,12 @@
                 <router-link to="/HomeR">INICIO</router-link>
                 <router-link to="/PetsR">MIS MASCOTAS</router-link>
                 <router-link to="/Reviews">RESEÑAS</router-link>
-                <router-link to="/profileR">PERFIL REFUGIO</router-link>
             </nav>
             
             <div class="header-icons">
                 <a href="../views/calendar.html"><img src="../assets/icon-calendar.png" alt="Calendario"></a>
-                <a href="../views/profileV.html"><img id="header-profile-icon" src="../assets/icon-profile.png"
-                        alt="Perfil"></a>
+                <router-link to="/profileR"><img id="header-profile-icon" src="../assets/icon-profile.png"
+                        alt="Perfil"></router-link>
             </div>
             <div class="contact-info">
                 <!-- Botón para abrir el modal -->

@@ -7,6 +7,8 @@ import UserPets from './views/Pets.vue';
 import ProfileRefugio from './views/ProfileR.vue';
 import CustomerReviews from './views/Review.vue';
 import CalendarAdoptante from './views/CalendarA.vue';
+import PetsRefugio from './views/PetsR.vue';
+
 
 
 const routes = [
@@ -48,6 +50,11 @@ const routes = [
   { path: '/CalendarA',
     name: 'CalendarA',
     component: CalendarAdoptante
+  },
+
+  { path: '/PetsR',
+    name: 'PetsR',
+    component: PetsRefugio
   }
 
 
