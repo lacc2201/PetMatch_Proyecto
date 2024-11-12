@@ -5,24 +5,34 @@
             <div class="logo">
                 <img src="../assets/logopetmatch.png" alt="PetMatch Logo">
             </div>
+            <h5 class="title">!Bienvenido Refugio!</h5>
             <nav>
                 <router-link to="/HomeR">INICIO</router-link>
-                <router-link to="/Pets">MIS MASCOTAS</router-link>
-                <router-link to="/Reviews">RESEÑAS</router-link>
+                <router-link to="/PetsR">MIS MASCOTAS</router-link>
+                <router-link to="/ReviewsR">RESEÑAS</router-link>
             </nav>
+
             <div class="header-icons">
-                <a href="../views/calendar.html"><img src="../assets/icon-calendar.png" alt="Calendario"></a>
+                <router-link to="/CalendarR"><img src="../assets/icon-calendar.png" alt="Calendario"></router-link>
                 <router-link to="/profileR"><img id="header-profile-icon" src="../assets/icon-profile.png"
                         alt="Perfil"></router-link>
             </div>
             <div class="contact-info">
-                <a href="#" class="contact-button" id="logoutBtn" @click="showLogoutModal = true">Cerrar Sesión</a>
+                <!-- Botón para abrir el modal -->
+                <a @click="showLogoutModal = true">Cerrar Sesión</a>
+                <!-- Modal de Cerrar Sesión -->
+                <div v-if="showLogoutModal" id="logoutModal" class="modal">
+                    <div class="modal-content">
+                        <h2>¿Estás seguro de que deseas cerrar sesión?</h2>
+                        <button @click="logout">Confirmar</button>
+                        <button @click="showLogoutModal = false">Cancelar</button>
+                    </div>
+                </div>
             </div>
-            
         </header>
 
         <div id="profile-container">
-            <h2 style="text-align: center; font-family: 'Arial', sans-serif; color: #f9c74f;">🐾Perfil de Vendedor🐾
+            <h2 style="text-align: center; font-family: 'Arial', sans-serif; color: #f9c74f;">🐾Perfil del Refugio🐾
             </h2>
             <img id="profile-pic" src="" alt="Foto de perfil">
             <div class="profile-info">
@@ -107,6 +117,100 @@ export default {
 </script>
 
 <style scoped>
+/* Estilos generales para la caja del perfil */
+#profile-container,
+#edit-profile-container {
+    border: 2px solid #f9c74f;
+    padding: 30px;
+    border-radius: 10px;
+    max-width: 600px;
+    margin: 50px auto;
+    background-color: #ffffff;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Estilos para la imagen de perfil */
+#profile-container img {
+    display: block;
+    margin: 0 auto 30px auto;
+    border-radius: 50%;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border: 4px solid #f9c74f;
+}
+
+/* Estilos para los botones */
+button {
+    background-color: #f9c74f;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #f08c00;
+}
+
+/* Estilos para la información del perfil */
+.profile-info {
+    text-align: left;
+    margin-bottom: 20px;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+}
+
+.profile-info p {
+    margin: 15px 0;
+    font-size: 16px;
+}
+
+/* Estilos para el formulario de edición */
+#edit-profile-form label {
+    font-size: 14px;
+    color: #555;
+}
+
+#edit-profile-form input,
+#edit-profile-form textarea {
+    margin-bottom: 15px;
+    width: calc(100% - 22px);
+    padding: 8px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Estilos para el modal de edicion */
+#edit-profile-container {
+    display: none;
+}
+
+/* Estilos para los iconos en el header */
+.header-icons {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.header-icons a {
+    display: inline-block;
+    margin-left: 15px;
+}
+
+.header-icons img {
+    width: 70px;
+    /* Aumentar el tamaño de los íconos */
+    height: 70px;
+    /* Aumentar el tamaño de los íconos */
+    cursor: pointer;
+}
+
 /* Define la fuente principal del sitio */
 body {
     font-family: Verdana, Geneva, Tahoma, sans-serif;

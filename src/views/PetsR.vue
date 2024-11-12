@@ -1,21 +1,26 @@
 <template>
     <div>
+        <!-- Header -->
         <header>
             <div class="logo">
                 <img src="../assets/logopetmatch.png" alt="PetMatch Logo">
             </div>
+            <h5 class="title">!Bienvenido Refugio!</h5>
             <nav>
                 <router-link to="/HomeR">INICIO</router-link>
                 <router-link to="/PetsR">MIS MASCOTAS</router-link>
-                <router-link to="/Reviews">RESEÑAS</router-link>
+                <router-link to="/ReviewsR">RESEÑAS</router-link>
             </nav>
-
+            
             <div class="header-icons">
-                <a href="../views/calendar.html"><img src="../assets/icon-calendar.png" alt="Calendario"></a>
-                <router-link to="/profileR"><img id="header-profile-icon" src="../assets/icon-profile.png" alt="Perfil"></router-link>
+                <router-link to="/CalendarR"><img src="../assets/icon-calendar.png" alt="Calendario"></router-link>
+                <router-link to="/profileR"><img id="header-profile-icon" src="../assets/icon-profile.png"
+                        alt="Perfil"></router-link>
             </div>
             <div class="contact-info">
+                <!-- Botón para abrir el modal -->
                 <a @click="showLogoutModal = true">Cerrar Sesión</a>
+                <!-- Modal de Cerrar Sesión -->
                 <div v-if="showLogoutModal" id="logoutModal" class="modal">
                     <div class="modal-content">
                         <h2>¿Estás seguro de que deseas cerrar sesión?</h2>

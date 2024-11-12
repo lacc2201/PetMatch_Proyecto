@@ -167,7 +167,7 @@ export default {
                     } else if (userData.rol === "Refugio") {
                         window.location.href = '/HomeR';  // Página del refugio
                     } else if (userData.rol === "Administrador") {
-                        window.location.href = '/Admin';  // Página del administrador
+                        window.location.href = '/AdminH';  // Página del administrador
                     } else {
                         alert("Rol no reconocido.");
                     }

@@ -1,17 +1,31 @@
 <template>
     <div>
-        <!-- Header -->
-        <header>
+         <!-- Header -->
+         <header>
             <div class="logo">
                 <img src="../assets/logopetmatch.png" alt="PetMatch Logo">
             </div>
+            <h5 class="title">!Bienvenido Adoptante!</h5>
             <nav>
-                <router-link to="/">INICIO</router-link>
-                <router-link to="/Pets">PETS</router-link>
-                <router-link to="/Reviews">RESEÑAS</router-link>
+                <router-link to="/HomeA">INICIO</router-link>
+                <router-link to="/PetsA">PETS</router-link>
+                <router-link to="/ReviewsA">RESEÑAS</router-link>
             </nav>
+            <div class="header-icons">
+                <router-link to ="/CalendarA"><img src="../assets/icon-calendar.png" alt="Calendario"></router-link>
+                <router-link to="/profileA"><img id="header-profile-icon" src="../assets/icon-profile.png" alt="Perfil"></router-link>
+            </div>
             <div class="contact-info">
-                <router-link to="/login" class="contact-button">Registrarse/Iniciar Sesión</router-link>
+                <!-- Botón para abrir el modal -->
+                <a @click="showLogoutModal = true">Cerrar Sesión</a>
+                <!-- Modal de Cerrar Sesión -->
+                <div v-if="showLogoutModal" id="logoutModal" class="modal">
+                    <div class="modal-content">
+                        <h2>¿Estás seguro de que deseas cerrar sesión?</h2>
+                        <button @click="logout">Confirmar</button>
+                        <button @click="showLogoutModal = false">Cancelar</button>
+                    </div>
+                </div>
             </div>
         </header>
 
@@ -142,27 +156,6 @@ export default {
 </script>
 
 <style scoped>
-/* Estilos para los iconos en el header */
-.header-icons {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin-right: 20px;
-}
-
-.header-icons a {
-    display: inline-block;
-    margin-left: 15px;
-}
-
-.header-icons img {
-    width: 70px;
-    /* Aumentar el tamaño de los íconos */
-    height: 70px;
-    /* Aumentar el tamaño de los íconos */
-    cursor: pointer;
-}
-
 /* Define la fuente principal del sitio */
 body {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -199,6 +192,7 @@ header::after {
     border-radius: 100% 100% 0 0;
     z-index: 1;
 }
+
 
 .logo img {
     width: 185px;
@@ -426,7 +420,7 @@ nav a:hover {
     font-weight: bold;
     color: #ffffff;
     /* Color del texto blanco */
-    background: #a2c2e3;
+    background: #4a90e2;
     /* Fondo azul claro */
     border-radius: 10px;
     /* Bordes más redondeados */
@@ -1257,6 +1251,93 @@ form select option {
 }
 
 .review-form button:hover {
+    background-color: #f9c74f;
+}
+
+#search-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+    width: 100%;
+}
+
+#search-input {
+    width: 50%;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    margin-right: 10px;
+}
+
+#search-btn {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#search-btn:hover {
+    background-color: #0056b3;
+}
+
+#results-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    width: 100%;
+}
+
+.pet-card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 15px;
+    display: flex;
+    flex-direction: row;
+    width: 400px;
+    /* Tamaño fijo para las tarjetas */
+    height: 300px;
+    /* Tamaño fijo para las tarjetas */
+    background-color: #f9f9f9;
+    box-sizing: border-box;
+    overflow: hidden;
+    /* Ocultar el desbordamiento */
+}
+
+.pet-card img {
+    width: 200px;
+    /* Tamaño fijo para la imagen */
+    height: 200px;
+    /* Tamaño fijo para la imagen */
+    border-radius: 5px;
+    margin-right: 15px;
+    object-fit: cover;
+}
+
+.pet-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    max-width: 250px;
+}
+
+.contact-btn {
+    margin-top: 10px;
+    background-color: #f9c74f;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    max-width: 150px;
+}
+
+.contact-btn:hover {
     background-color: #f9c74f;
 }
 </style>
