@@ -45,6 +45,20 @@
                                 @click="togglePassword('login-password')">👁️</button>
                         </div>
                         <button type="submit">Entrar</button>
+                        <p class="recover-password">
+                            <a href="#" @click.prevent="mostrarRecuperarPassword">¿Olvidaste tu contraseña?</a>
+                        </p>
+                    </form>
+                    <!-- Recuperación de contraseña -->
+                    <form id="recover-form" class="formulario__recuperar" v-show="mostrarRecoverForm"
+                        @submit.prevent="recuperarPassword">
+                        <h2>🔑 Recuperar Contraseña</h2>
+                        <input type="email" id="recover-email" placeholder="Correo Electrónico" v-model="recoverEmail"
+                            required />
+                        <button type="submit">Enviar correo de recuperación</button>
+                        <p class="back-to-login">
+                            <a href="#" @click.prevent="mostrarLogin">Volver al inicio de sesión</a>
+                        </p>
                     </form>
 
                     <!-- Register -->
@@ -109,9 +123,9 @@
 </template>
 
 <script>
-import { auth, db } from "@/firebaseConfig"; // Asegúrate de importar tu configuración de Firebase
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc, getDoc } from "firebase/firestore"; // Agrega getDoc aquí
+import { auth, db } from "@/firebaseConfig";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 
 export default {
     name: 'UserLogin',
@@ -119,106 +133,87 @@ export default {
         return {
             mostrarLoginForm: true,
             mostrarRegisterForm: false,
-            // Datos para el login
+            mostrarRecoverForm: false,
             loginEmail: "",
             loginPassword: "",
-            loginRol: "", // Para el campo de rol en login (aunque este se puede definir automáticamente)
-            // Datos para el registro
             registerNombre: "",
             registerEmail: "",
             registerDireccion: "",
             registerTelefono: "",
             registerPassword: "",
+            recoverEmail: "",
         };
     },
     methods: {
-        // Muestra el formulario de login
         mostrarLogin() {
             this.mostrarLoginForm = true;
             this.mostrarRegisterForm = false;
+            this.mostrarRecoverForm = false;
         },
+        mostrarRecuperarPassword() {
+            this.mostrarLoginForm = false;
+            this.mostrarRecoverForm = true;
+        },
+        async recuperarPassword() {
+            if (!this.recoverEmail) {
+                alert("Por favor ingresa tu correo electrónico.");
+                return;
+            }
 
-        // Muestra el formulario de registro
+            try {
+                await sendPasswordResetEmail(auth, this.recoverEmail);
+                alert("Se ha enviado un correo para restablecer tu contraseña.");
+                this.mostrarLogin();
+            } catch (error) {
+                alert("Error al enviar el correo de recuperación: " + error.message);
+            }
+        },
         mostrarRegistro() {
             this.mostrarLoginForm = false;
             this.mostrarRegisterForm = true;
         },
-
         async validarFormularioLogin() {
-            if (!this.loginEmail || !this.loginPassword) {
-                alert("Todos los campos son obligatorios.");
-                return false;
-            }
-
             try {
-                // Inicia sesión con Firebase Authentication
                 const userCredential = await signInWithEmailAndPassword(auth, this.loginEmail, this.loginPassword);
                 const user = userCredential.user;
-
-                // Recupera la información del usuario desde Firestore usando el UID
                 const userDoc = await getDoc(doc(db, "usuarios", user.uid));
 
                 if (userDoc.exists()) {
                     const userData = userDoc.data();
-
-                    // Verifica el rol del usuario y redirige según corresponda
                     if (userData.rol === "Adoptante") {
-                        window.location.href = '/HomeA';  // Página del adoptante
+                        window.location.href = '/HomeA';
                     } else if (userData.rol === "Refugio") {
-                        window.location.href = '/HomeR';  // Página del refugio
+                        window.location.href = '/HomeR';
                     } else if (userData.rol === "Administrador") {
-                        window.location.href = '/AdminH';  // Página del administrador
+                        window.location.href = '/AdminH';
                     } else {
                         alert("Rol no reconocido.");
                     }
                 } else {
-                    alert("Error: No se encontró el usuario en la base de datos.");
+                    alert("No se encontró el usuario.");
                 }
-
             } catch (error) {
                 alert("Error en el inicio de sesión: " + error.message);
             }
         },
-
-        // Validación del formulario de registro y almacenamiento en la tabla usuarios
         async validarFormularioRegistro() {
-            if (!this.registerNombre || !this.registerEmail || !this.registerDireccion || !this.registerTelefono || !this.registerPassword) {
-                alert("Todos los campos son obligatorios.");
-                return false;
-            }
-
             try {
-                // Registrar el usuario en Firebase Authentication
                 const userCredential = await createUserWithEmailAndPassword(auth, this.registerEmail, this.registerPassword);
                 const user = userCredential.user;
 
-                // Guardar la información del usuario en Firestore (tabla usuarios)
                 await setDoc(doc(db, "usuarios", user.uid), {
                     nombre: this.registerNombre,
                     email: this.registerEmail,
                     direccion: this.registerDireccion,
                     telefono: this.registerTelefono,
-                    rol: 'Adoptante', // Rol por defecto para los nuevos usuarios
-                    fecha_registro: new Date(), // Fecha de registro del usuario
+                    rol: "Adoptante",
+                    fecha_registro: new Date(),
                 });
 
-                // Aquí se muestra el mensaje de éxito al completar el registro
-                alert("Registro exitoso. Ahora inicia sesión.");
-                this.mostrarLogin(); // Cambiar a la vista de login
-
+                alert("Registro exitoso, ahora puedes iniciar sesión.");
+                this.mostrarLogin();
             } catch (error) {
-                // Si ocurre un error, mostrar el mensaje correspondiente
-                alert("Error en el registro: " + error.message);
-            }
-        },
-
-        // Función para mostrar/ocultar contraseña
-        togglePassword(inputId) {
-            const input = document.getElementById(inputId);
-            if (input.type === "password") {
-                input.type = "text";
-            } else {
-                input.type = "password";
+                alert("Error al registrar: " + error.message);
             }
         },
     },
@@ -226,8 +221,191 @@ export default {
 </script>
 
 
-
 <style scoped>
+/* Botón activo */
+nav a.active {
+    background-color: #1d6fd8;
+    /* Color más oscuro */
+    color: #fff;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Animación al pasar el mouse */
+.header-title:hover {
+    color: #e2b94a;
+    /* Cambia el texto a dorado */
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+    /* Aumenta el efecto de sombra */
+    transition: all 0.3s ease;
+}
+
+.header-title:hover:before {
+    background-color: #4A90E2;
+    /* Cambia la línea a azul */
+    transition: background-color 0.3s ease;
+}
+
+/* Define la fuente principal del sitio */
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
+}
+
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: #4a90e2;
+    padding: 20px 100px;
+    /* Espaciado inicial */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom-left-radius: 80px;
+    border-bottom-right-radius: 80px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    height: 120px;
+    transition: all 0.3s ease-in-out;
+    /* Transición suave */
+}
+
+
+/* Header reducido */
+header.shrink {
+    padding: 10px 80px;
+    /* Reduce el padding */
+    height: 80px;
+    /* Reduce la altura */
+    background-color: #4a90e2;
+    /* Fondo más transparente */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    /* Sombras más suaves */
+}
+
+/* Otros estilos existentes */
+.logo img {
+    width: 152px;
+    height: auto;
+    z-index: 2;
+    transition: transform 0.3s ease, width 0.3s ease;
+    /* Transición de zoom y tamaño */
+}
+
+header.shrink .logo img {
+    width: 120px;
+    /* Reduce el tamaño del logo */
+}
+
+/* Estilo de nube en la parte inferior del header */
+header::after {
+    content: '';
+    position: absolute;
+    bottom: -60px;
+    left: 0;
+    width: 90%;
+    height: 80px;
+    background: #4a90e2;
+    border-radius: 100% 100% 0 0;
+    z-index: 1;
+}
+
+.logo img {
+    width: 185px;
+    height: auto;
+    z-index: 2;
+    transition: transform 0.3s ease;
+    /* Transición suave para el zoom */
+}
+
+.logo img:hover {
+    transform: scale(1.1);
+    /* Aumenta el tamaño del logo al pasar el mouse */
+}
+
+/* Define la fuente principal del sitio */
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
+}
+
+/* Estilo para el header */
+/* Header inicial */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: #4a90e2;
+    padding: 20px 100px;
+    /* Espaciado inicial */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom-left-radius: 80px;
+    border-bottom-right-radius: 80px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    height: 120px;
+    transition: all 0.3s ease-in-out;
+    /* Transición suave */
+}
+
+/* Header reducido */
+header.shrink {
+    padding: 10px 80px;
+    /* Reduce el padding */
+    height: 80px;
+    /* Reduce la altura */
+    background-color: #4a90e2;
+    /* Fondo más transparente */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    /* Sombras más suaves */
+}
+
+/* Otros estilos existentes */
+.logo img {
+    width: 152px;
+    height: auto;
+    z-index: 2;
+    transition: transform 0.3s ease, width 0.3s ease;
+    /* Transición de zoom y tamaño */
+}
+
+header.shrink .logo img {
+    width: 120px;
+    /* Reduce el tamaño del logo */
+}
+
+nav {
+    display: flex;
+    gap: 30px;
+    z-index: 2;
+}
+
+nav a {
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 20px;
+    background-color: #66a3ff;
+    border: none;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+nav a:hover {
+    background-color: #1d6fd8;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-3px);
+}
+
 /* Define la fuente principal del sitio */
 body {
     font-family: Verdana, Geneva, Tahoma, sans-serif;

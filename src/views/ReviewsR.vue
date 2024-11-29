@@ -1,150 +1,140 @@
 <template>
     <div>
          <!-- Header -->
-         <header>
+        <header>
             <div class="logo">
                 <img src="../assets/logopetmatch.png" alt="PetMatch Logo">
             </div>
-            <h5 class="title">!Bienvenido Refugio!</h5>
+            <div class="header-title">Panel de Refugio</div>
             <nav>
                 <router-link to="/HomeR">INICIO</router-link>
                 <router-link to="/PetsR">MIS MASCOTAS</router-link>
                 <router-link to="/ReviewsR">RESEÑAS</router-link>
             </nav>
-            
             <div class="header-icons">
                 <router-link to="/CalendarR"><img src="../assets/icon-calendar.png" alt="Calendario"></router-link>
                 <router-link to="/profileR"><img id="header-profile-icon" src="../assets/icon-profile.png"
                         alt="Perfil"></router-link>
             </div>
             <div class="contact-info">
-                <!-- Botón para abrir el modal -->
-                <a @click="showLogoutModal = true">Cerrar Sesión</a>
-                <!-- Modal de Cerrar Sesión -->
-                <div v-if="showLogoutModal" id="logoutModal" class="modal">
-                    <div class="modal-content">
-                        <h2>¿Estás seguro de que deseas cerrar sesión?</h2>
-                        <button @click="logout">Confirmar</button>
-                        <button @click="showLogoutModal = false">Cancelar</button>
-                    </div>
-                </div>
+                <router-link to="/login" class="contact-button">Cerrar Sesión</router-link>
             </div>
         </header>
-
-        <!-- Contenedor Principal de Reseñas -->
-        <section class="reviews-section">
+<!-- Contenedor Principal de Reseñas -->
+<section class="reviews-section">
             <div class="title">
                 Reseñas de Nuestros Clientes
             </div>
             <p1>Conoce las experiencias de quienes han encontrado un nuevo miembro para su familia.</p1>
-
             <div class="reviews-container">
+                <div class="reviews-container">
 
-                <!-- Reseña 1 -->
-                <div class="review-card">
-                    <div class="review-header">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEmDcOJVJewZiQ8TB74Lbbf1FFkK1CyAzEfA&s"
-                            alt="Foto del Cliente" class="client-photo">
-                        <div class="client-info">
-                            <h3>Juan Pérez</h3>
-                            <p class="review-date">12 de Agosto, 2023</p>
+                    <!-- Reseña 1 -->
+                    <div class="review-card">
+                        <div class="review-header">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEmDcOJVJewZiQ8TB74Lbbf1FFkK1CyAzEfA&s"
+                                alt="Foto del Cliente" class="client-photo">
+                            <div class="client-info">
+                                <h3>Juan Pérez</h3>
+                                <p class="review-date">12 de Agosto, 2023</p>
+                            </div>
+                            <div class="rating">
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
                         </div>
-                        <div class="rating">
-                            <i class="fas fa-star filled"></i>
-                            <i class="fas fa-star filled"></i>
-                            <i class="fas fa-star filled"></i>
-                            <i class="fas fa-star filled"></i>
-                            <i class="fas fa-star"></i>
+                        <div class="review-content">
+                            <div class="pet-photo">
+                                <img src="https://img.freepik.com/fotos-premium/labrador-retriever-negro-realista-sobre-deslumbrante-fondo-natural-al-aire-libre_31965-79641.jpg"
+                                    alt="Foto de la Mascota">
+                            </div>
+                            <div class="pet-info">
+                                <h4>Fido</h4>
+                                <p><strong>Estado de la Mascota:</strong> Saludable y lleno de energía.</p>
+                                <p>
+                                    Estoy muy contento con Fido, es un perro muy cariñoso y se adaptó rápidamente a
+                                    nuestra familia.
+                                    El proceso de adopción fue sencillo y el personal muy amable. ¡Recomiendo este lugar
+                                    a todos!
+                                </p>
+                            </div>
                         </div>
                     </div>
-                    <div class="review-content">
-                        <div class="pet-photo">
-                            <img src="https://img.freepik.com/fotos-premium/labrador-retriever-negro-realista-sobre-deslumbrante-fondo-natural-al-aire-libre_31965-79641.jpg"
-                                alt="Foto de la Mascota">
+
+                    <!-- Reseña 2 -->
+                    <div class="review-card">
+                        <div class="review-header">
+                            <img src="https://yt3.googleusercontent.com/r9z-sZf8TUgxfVVzWFlCwO_PvfQdNo-pTH8hgtkvDHjgcAP8qNrj1hvQNkmng1vGkgnxRpfEng=s900-c-k-c0x00ffffff-no-rj"
+                                alt="Foto del Cliente" class="client-photo">
+                            <div class="client-info">
+                                <h3>María López</h3>
+                                <p class="review-date">5 de Julio, 2023</p>
+                            </div>
+                            <div class="rating">
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                            </div>
                         </div>
-                        <div class="pet-info">
-                            <h4>Fido</h4>
-                            <p><strong>Estado de la Mascota:</strong> Saludable y lleno de energía.</p>
-                            <p>
-                                Estoy muy contento con Fido, es un perro muy cariñoso y se adaptó rápidamente a nuestra
-                                familia.
-                                El proceso de adopción fue sencillo y el personal muy amable. ¡Recomiendo este lugar a
-                                todos!
-                            </p>
+                        <div class="review-content">
+                            <div class="pet-photo">
+                                <img src="https://img.freepik.com/fotos-premium/gato-siames-realista-sobre-deslumbrante-fondo-natural-al-aire-libre_31965-93050.jpg"
+                                    alt="Foto de la Mascota">
+                            </div>
+                            <div class="pet-info">
+                                <h4>Mimi</h4>
+                                <p><strong>Estado de la Mascota:</strong> Vacunada y esterilizada.</p>
+                                <p>
+                                    Luna es la gata más dulce que he conocido. Desde que llegó a casa ha llenado
+                                    nuestros días de alegría.
+                                    El servicio fue excelente y se aseguraron de que Luna estuviera en perfectas
+                                    condiciones. ¡Gracias!
+                                </p>
+                            </div>
                         </div>
                     </div>
+
+                    <!-- Reseña 3 -->
+                    <div class="review-card">
+                        <div class="review-header">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCoLCCWKS9kI-qwOBWloaQm0wlmOnUpuUfkQ&s"
+                                alt="Foto del Cliente" class="client-photo">
+                            <div class="client-info">
+                                <h3>Carlos García</h3>
+                                <p class="review-date">20 de Junio, 2023</p>
+                            </div>
+                            <div class="rating">
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <div class="review-content">
+                            <div class="pet-photo">
+                                <img src="https://img.freepik.com/fotos-premium/pastor-aleman-realista-sobre-deslumbrante-fondo-natural-al-aire-libre_31965-98855.jpg"
+                                    alt="Foto de la Mascota">
+                            </div>
+                            <div class="pet-info">
+                                <h4>Max</h4>
+                                <p><strong>Estado de la Mascota:</strong> Ligera lesión en la pata trasera, en
+                                    recuperación.</p>
+                                <p>
+                                    Rex es un perro muy valiente y a pesar de su lesión se muestra muy juguetón.
+                                    El centro nos informó de todo y nos dio las indicaciones necesarias para su cuidado.
+                                    Estamos felices con él.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
-
-                <!-- Reseña 2 -->
-                <div class="review-card">
-                    <div class="review-header">
-                        <img src="https://yt3.googleusercontent.com/r9z-sZf8TUgxfVVzWFlCwO_PvfQdNo-pTH8hgtkvDHjgcAP8qNrj1hvQNkmng1vGkgnxRpfEng=s900-c-k-c0x00ffffff-no-rj"
-                            alt="Foto del Cliente" class="client-photo">
-                        <div class="client-info">
-                            <h3>María López</h3>
-                            <p class="review-date">5 de Julio, 2023</p>
-                        </div>
-                        <div class="rating">
-                            <i class="fas fa-star filled"></i>
-                            <i class="fas fa-star filled"></i>
-                            <i class="fas fa-star filled"></i>
-                            <i class="fas fa-star filled"></i>
-                            <i class="fas fa-star filled"></i>
-                        </div>
-                    </div>
-                    <div class="review-content">
-                        <div class="pet-photo">
-                            <img src="https://img.freepik.com/fotos-premium/gato-siames-realista-sobre-deslumbrante-fondo-natural-al-aire-libre_31965-93050.jpg"
-                                alt="Foto de la Mascota">
-                        </div>
-                        <div class="pet-info">
-                            <h4>Mimi</h4>
-                            <p><strong>Estado de la Mascota:</strong> Vacunada y esterilizada.</p>
-                            <p>
-                                Luna es la gata más dulce que he conocido. Desde que llegó a casa ha llenado nuestros
-                                días de alegría.
-                                El servicio fue excelente y se aseguraron de que Luna estuviera en perfectas
-                                condiciones. ¡Gracias!
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Reseña 3 -->
-                <div class="review-card">
-                    <div class="review-header">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCoLCCWKS9kI-qwOBWloaQm0wlmOnUpuUfkQ&s"
-                            alt="Foto del Cliente" class="client-photo">
-                        <div class="client-info">
-                            <h3>Carlos García</h3>
-                            <p class="review-date">20 de Junio, 2023</p>
-                        </div>
-                        <div class="rating">
-                            <i class="fas fa-star filled"></i>
-                            <i class="fas fa-star filled"></i>
-                            <i class="fas fa-star filled"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                        </div>
-                    </div>
-                    <div class="review-content">
-                        <div class="pet-photo">
-                            <img src="https://img.freepik.com/fotos-premium/pastor-aleman-realista-sobre-deslumbrante-fondo-natural-al-aire-libre_31965-98855.jpg"
-                                alt="Foto de la Mascota">
-                        </div>
-                        <div class="pet-info">
-                            <h4>Max</h4>
-                            <p><strong>Estado de la Mascota:</strong> Ligera lesión en la pata trasera, en recuperación.
-                            </p>
-                            <p>
-                                Rex es un perro muy valiente y a pesar de su lesión se muestra muy juguetón.
-                                El centro nos informó de todo y nos dio las indicaciones necesarias para su cuidado.
-                                Estamos felices con él.
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
             </div>
         </section>
 
@@ -196,88 +186,397 @@ export default {
 </script>
 
 <style scoped>
-/* Estilos para la sección de reseñas */
-.reviews-section {
-    padding: 40px 20px;
-    background-color: #f9f9f9;
-    text-align: center;
+/* Botón activo */
+nav a.active {
+    background-color: #1d6fd8; /* Color más oscuro */
+    color: #fff;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+/* Define la fuente principal del sitio */
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
 }
 
-.reviews-section .title {
+/* Estilo para el header */
+/* Header inicial */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: #4a90e2;
+    padding: 20px 100px; /* Espaciado inicial */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom-left-radius: 80px;
+    border-bottom-right-radius: 80px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    height: 120px;
+    transition: all 0.3s ease-in-out; /* Transición suave */
+}
+
+/* Header reducido */
+header.shrink {
+    padding: 10px 80px; /* Reduce el padding */
+    height: 80px; /* Reduce la altura */
+    background-color: #4a90e2; /* Fondo más transparente */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Sombras más suaves */
+}
+
+/* Otros estilos existentes */
+.logo img {
+    width: 152px;
+    height: auto;
+    z-index: 2;
+    transition: transform 0.3s ease, width 0.3s ease; /* Transición de zoom y tamaño */
+}
+
+header.shrink .logo img {
+    width: 120px; /* Reduce el tamaño del logo */
+}
+
+nav {
+    display: flex;
+    gap: 30px;
+    z-index: 2;
+}
+
+nav a {
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 20px;
+    background-color: #66a3ff;
+    border: none;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+nav a:hover {
+    background-color: #1d6fd8;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-3px);
+}
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Fondo semitransparente */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    /* Asegura que esté encima de otros elementos */
+}
+
+.modal.open {
+    display: flex;
+    /* El modal será visible solo si tiene la clase 'open' */
+}
+
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+
+/* Estilos para los iconos en el header */
+.header-icons {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.header-icons a {
+    display: inline-block;
+    margin-left: 15px;
+}
+
+.header-icons img {
+    width: 70px;
+    /* Aumentar el tamaño de los íconos */
+    height: 70px;
+    /* Aumentar el tamaño de los íconos */
+    cursor: pointer;
+}
+
+/* Estilos para el modal */
+.modal {
+    display: none;
+    /* Ocultar el modal por defecto */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+    padding-top: 60px;
+}
+
+
+
+.close-button {
+    color: #aaa;
+    float: right;
     font-size: 28px;
-    color: #333;
+    font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.review-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.review-form label {
+    margin: 10px 0 5px;
+}
+
+.review-form input,
+.review-form textarea {
     margin-bottom: 10px;
 }
 
-.reviews-section p1 {
-    font-size: 18px;
-    color: #666;
-    margin-bottom: 30px;
-}
-
-.reviews-container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 30px; /* Aumenta el espacio entre las tarjetas */
-        justify-content: center;
-    }
-
-    .review-card {
-        background-color: #fff;
-        border-radius: 8px;
-        padding: 20px;
-        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-        width: 400px; /* Aumenta el ancho de la tarjeta de reseña */
-    }
-
-
-.review-header {
+.star-rating {
     display: flex;
     align-items: center;
-    margin-bottom: 15px;
 }
 
-.client-photo {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 15px;
+.star-rating input[type="radio"] {
+    display: none;
 }
 
-.client-info h3 {
-    font-size: 20px;
-    color: #333;
+.star-rating label {
+    font-size: 24px;
+    color: #ccc;
+    cursor: pointer;
 }
 
-.client-info .review-date {
-    font-size: 14px;
-    color: #888;
-}
-
-.rating i {
+.star-rating input[type="radio"]:checked~label {
     color: #f39c12;
-    margin: 0 2px;
 }
 
-.review-content {
-    text-align: left;
+.calificacion {
+    display: flex;
+    gap: 10px;
 }
 
-.pet-photo img {
+/* Nuevo diseño del título */
+.header-title {
+    font-size: 1.5rem;
+    /* Tamaño de letra más pequeño */
+    font-weight: bold;
+    color: #ffffff;
+    /* Azul intermedio */
+    margin-top: 5px;
+    font-family: 'Arial', sans-serif;
+    /* Cambio de fuente */
+    position: relative;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    /* Sombra suave */
+    margin-left: -33px;
+    /* Ajuste hacia la izquierda */
+}
+
+/* Animación al pasar el mouse */
+.header-title:hover {
+    color: #e2b94a;
+    /* Cambia el texto a dorado */
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+    /* Aumenta el efecto de sombra */
+    transition: all 0.3s ease;
+}
+
+.header-title:hover:before {
+    background-color: #4A90E2;
+    /* Cambia la línea a azul */
+    transition: background-color 0.3s ease;
+}
+
+/* Botón activo */
+nav a.active {
+    background-color: #1d6fd8;
+    /* Color más oscuro */
+    color: #fff;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.calificacion i.active {
+    color: gold;
+}
+
+/* Estilos para los iconos en el header */
+.header-icons {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.header-icons a {
+    display: inline-block;
+    margin-left: 15px;
+}
+
+.header-icons img {
+    width: 70px;
+    /* Aumentar el tamaño de los íconos */
+    height: 70px;
+    /* Aumentar el tamaño de los íconos */
+    cursor: pointer;
+}
+
+/* Estilos para el modal */
+.modal {
+    display: block;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
     width: 100%;
-    border-radius: 8px;
-    margin-bottom: 15px;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+    padding-top: 60px;
 }
 
-.pet-info h4 {
-    font-size: 18px;
-    color: #333;
-    margin-bottom: 5px;
+.modal-content {
+    background-color: #fefefe;
+    margin: 5% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
 }
 
-.pet-info p {
-    font-size: 16px;
-    color: #666;
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.review-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.review-form label {
+    margin: 10px 0 5px;
+}
+
+.review-form input,
+.review-form textarea {
+    margin-bottom: 10px;
+}
+
+.star-rating {
+    display: flex;
+    align-items: center;
+}
+
+.star-rating input[type="radio"] {
+    display: none;
+}
+
+.star-rating label {
+    font-size: 24px;
+    color: #ccc;
+    cursor: pointer;
+}
+
+.star-rating input[type="radio"]:checked~label {
+    color: #f39c12;
+}
+
+.calificacion {
+    display: flex;
+    gap: 10px;
+}
+
+/* Nuevo diseño del título */
+.header-title {
+    font-size: 1.5rem;
+    /* Tamaño de letra más pequeño */
+    font-weight: bold;
+    color: #ffffff;
+    /* Azul intermedio */
+    margin-top: 5px;
+    font-family: 'Arial', sans-serif;
+    /* Cambio de fuente */
+    position: relative;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    /* Sombra suave */
+    margin-left: -33px;
+    /* Ajuste hacia la izquierda */
+}
+
+/* Animación al pasar el mouse */
+.header-title:hover {
+    color: #e2b94a;
+    /* Cambia el texto a dorado */
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+    /* Aumenta el efecto de sombra */
+    transition: all 0.3s ease;
+}
+
+.header-title:hover:before {
+    background-color: #4A90E2;
+    /* Cambia la línea a azul */
+    transition: background-color 0.3s ease;
+}
+
+/* Botón activo */
+nav a.active {
+    background-color: #1d6fd8;
+    /* Color más oscuro */
+    color: #fff;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
 }
 
 /* Define la fuente principal del sitio */
@@ -302,13 +601,14 @@ header {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     height: 120px;
+    /* Reduce el tamaño del área azul */
 }
 
 /* Estilo de nube en la parte inferior del header */
 header::after {
     content: '';
     position: absolute;
-    bottom: -60px;
+    bottom: -50px;
     left: 0;
     width: 90%;
     height: 80px;
@@ -317,9 +617,8 @@ header::after {
     z-index: 1;
 }
 
-
 .logo img {
-    width: 185px;
+    width: 152px;
     height: auto;
     z-index: 2;
     transition: transform 0.3s ease;
@@ -385,6 +684,15 @@ nav a:hover {
     /* Color más oscuro para el hover */
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
     transform: translateY(-3px);
+}
+
+/* Botón activo */
+nav a.active {
+    background-color: #1d6fd8;
+    /* Color más oscuro */
+    color: #fff;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
 }
 
 
@@ -544,14 +852,18 @@ nav a:hover {
     font-weight: bold;
     color: #ffffff;
     /* Color del texto blanco */
-    background: #a2c2e3;
+    background: #4a90e2;
     /* Fondo azul claro */
     border-radius: 10px;
     /* Bordes más redondeados */
     padding: 10px 20px;
     /* Espaciado interno reducido */
     text-align: center;
+    margin: 0 auto;
+    /* Centrar horizontalmente */
     margin-bottom: 20px;
+    max-width: 600px;
+    /* Limitar el ancho máximo */
     position: relative;
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -589,6 +901,7 @@ nav a:hover {
     border-radius: 50%;
     z-index: 1;
 }
+
 
 @keyframes shadowPulse {
 
@@ -765,16 +1078,16 @@ footer {
 }
 
 .footer-section img {
-    width: 205px;
+    width: 165px;
     /* Aumentar el tamaño de la imagen del logo */
-    margin-bottom: -5px;
+    margin-bottom: -10px;
     /* Reducir el margen inferior para acercar los íconos al logo */
 }
 
 .social-icons {
     display: flex;
     justify-content: center;
-    margin-top: -25px;
+    margin-top: -40px;
     /* Reducir el margen superior para acercar los íconos al logo */
 }
 
@@ -855,7 +1168,9 @@ footer {
 
 /* Animación de parpadeo en las patas */
 .paw-icon {
-    animation: paw-blink 1.5s infinite alternate;
+    font-size: 30px;
+    color: lightgray;
+    cursor: pointer;
 }
 
 @keyframes paw-blink {
@@ -907,9 +1222,12 @@ main {
     display: flex;
     justify-content: center;
     -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    background-color: rgba(255, 223, 0, 0.6);
-    /* Amarillo claro con opacidad */
+    backdrop-filter: blur(80px);
+    background: rgba(0, 47, 108, 0.95);
+    /* Azul oscuro con opacidad alta */
+    background-image: url('../assets/fondo-caja.png');
+    background-size: cover;
+    background-position: center;
     border-radius: 15px;
     /* Bordes redondeados */
     margin: auto;
@@ -918,7 +1236,7 @@ main {
 
 .caja__trasera div {
     margin: 100px 50px;
-    color: #002f6c;
+    color: #fff;
     /* Azul oscuro para el texto */
     transition: all 500ms;
 }
@@ -968,12 +1286,12 @@ main {
 
 .caja__trasera button {
     padding: 10px 50px;
-    border: 2px solid #002f6c;
+    border: 2px solid #4a90e2;
     /* Azul oscuro */
     font-size: 16px;
-    background: #f9c74f;
+    background: transparent;
     /* Amarillo dorado */
-    color: #002f6c;
+    color: #fff;
     /* Azul oscuro */
     font-weight: 600;
     cursor: pointer;
@@ -986,7 +1304,7 @@ main {
 .caja__trasera button:hover {
     background: #f9c74f;
     /* Amarillo dorado */
-    color: #002f6c;
+    color: #4a90e2;
     /* Azul oscuro */
 }
 
@@ -1202,7 +1520,8 @@ form select option {
     font-size: 2rem;
     font-weight: bold;
     margin-bottom: 20px;
-    color: #333;
+    color: #ffffff;
+    margin: 0;
 }
 
 .reviews-section p1 {
@@ -1216,6 +1535,9 @@ form select option {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 
 .review-card {
@@ -1224,6 +1546,8 @@ form select option {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
     text-align: left;
+    width: 30%;
+    margin-bottom: 20px;
 }
 
 .review-header {
@@ -1232,10 +1556,19 @@ form select option {
     margin-bottom: 20px;
 }
 
+/* Estilo para la foto del cliente en las reseñas */
 .client-photo {
+    width: 80px;
+    /* Ajusta el tamaño según el diseño */
+    height: 80px;
+    /* Mantén el aspecto cuadrado */
     border-radius: 50%;
+    /* Asegura que la imagen sea circular */
     margin-right: 15px;
+    object-fit: cover;
+    /* Mantiene la proporción de la imagen */
 }
+
 
 .client-info h3 {
     margin: 0;
@@ -1258,17 +1591,37 @@ form select option {
     margin-left: 5px;
 }
 
+/* Estilo para el contenido de la reseña */
 .review-content {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    /* Espacio entre la imagen y la información */
 }
 
+/* Estilo para la foto de la mascota en las reseñas */
 .pet-photo img {
-    width: 100%;
+    width: 150px;
+    /* Ajusta el tamaño según el diseño */
+    height: auto;
+    /* Mantiene la proporción de la imagen */
     border-radius: 10px;
-    margin-bottom: 20px;
+    /* Añade bordes redondeados si es necesario */
+    object-fit: cover;
+    /* Mantiene la proporción de la imagen */
 }
 
+/* Estilo para la información de la mascota */
+.pet-info {
+    flex: 1;
+    /* Permite que la información ocupe el espacio restante */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    /* Espacio entre los elementos dentro de la información */
+}
+
+/* Ajusta el tamaño del texto en la información de la mascota */
 .pet-info h4 {
     font-size: 1.4rem;
     margin-bottom: 10px;
@@ -1376,5 +1729,38 @@ form select option {
 
 .review-form button:hover {
     background-color: #f9c74f;
+}
+
+.paw-rating label {
+    font-size: 24px;
+    color: #ccc;
+    cursor: pointer;
+}
+
+.paw-rating input[type="radio"]:checked~label {
+    color: #f39c12;
+}
+
+.review-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+input[type="radio"]:checked+.paw-icon {
+    color: orange;
+}
+
+.paw-icon:hover {
+    color: darkorange;
+}
+
+.paw-icon.active {
+    color: orange;
 }
 </style>

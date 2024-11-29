@@ -6,7 +6,7 @@
                 <img src="../assets/logopetmatch.png" alt="PetMatch Logo">
             </div>
             <nav>
-                <router-link to="/">INICIO</router-link>
+                <router-link to="/" class="active">INICIO</router-link>
                 <router-link to="/Pets">PETS</router-link>
                 <router-link to="/Reviews">RESEÑAS</router-link>
             </nav>
@@ -118,9 +118,9 @@
 
 <script>
 export default {
-    name: "HomePageIndex", // Cambia el nombre aquí
+    name: "HomePageIndex", // Nombre del componente
     mounted() {
-        // Aquí puedes agregar la lógica del carrusel usando JavaScript o un plugin de Vue
+        // Carrusel automático
         const imagesContainer = document.querySelector('.carousel-images');
         const images = document.querySelectorAll('.carousel-images img');
         let index = 0;
@@ -136,12 +136,61 @@ export default {
         // Cambia de imagen automáticamente cada 3 segundos
         setInterval(slideShow, 3000);
 
-    }
-};
+        // Seleccionar el header
+        const header = document.querySelector('header');
 
+        // Detectar desplazamiento y aplicar clase 'shrink'
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                header.classList.add('shrink');
+            } else {
+                header.classList.remove('shrink');
+            }
+        });
+
+        // Seleccionar todos los enlaces de navegación
+        const navLinks = document.querySelectorAll('nav a');
+
+        // Añadir evento de clic a cada enlace
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                // Eliminar la clase activa de todos los enlaces
+                navLinks.forEach(link => link.classList.remove('active'));
+                // Añadir la clase activa al enlace que se ha hecho clic
+                link.classList.add('active');
+            });
+        });
+    },
+};
 </script>
 
+
+
 <style scoped>
+/* Botón activo */
+nav a.active {
+    background-color: #1d6fd8;
+    /* Color más oscuro */
+    color: #fff;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+/* Animación al pasar el mouse */
+.header-title:hover {
+    color: #e2b94a;
+    /* Cambia el texto a dorado */
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+    /* Aumenta el efecto de sombra */
+    transition: all 0.3s ease;
+}
+
+.header-title:hover:before {
+    background-color: #4A90E2;
+    /* Cambia la línea a azul */
+    transition: background-color 0.3s ease;
+}
+
 /* Define la fuente principal del sitio */
 body {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -150,22 +199,68 @@ body {
     background-color: #f2f2f2;
 }
 
-/* Estilo para el header */
 header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
     background-color: #4a90e2;
-    /* Azul intermedio */
-    padding: 0px 100px;
+    padding: 20px 100px; /* Espaciado inicial */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    position: relative;
     border-bottom-left-radius: 80px;
     border-bottom-right-radius: 80px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     height: 120px;
+    transition: all 0.3s ease-in-out; /* Transición suave */
 }
 
+
+/* Header reducido */
+header.shrink {
+    padding: 10px 80px; /* Reduce el padding */
+    height: 80px; /* Reduce la altura */
+    background-color: #4a90e2; /* Fondo más transparente */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Sombras más suaves */
+}
+
+/* Otros estilos existentes */
+.logo img {
+    width: 152px;
+    height: auto;
+    z-index: 2;
+    transition: transform 0.3s ease, width 0.3s ease; /* Transición de zoom y tamaño */
+}
+
+header.shrink .logo img {
+    width: 120px; /* Reduce el tamaño del logo */
+}
+
+nav {
+    display: flex;
+    gap: 30px;
+    z-index: 2;
+}
+
+nav a {
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 20px;
+    background-color: #66a3ff;
+    border: none;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+nav a:hover {
+    background-color: #1d6fd8;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-3px);
+}
 /* Estilo de nube en la parte inferior del header */
 header::after {
     content: '';
@@ -193,30 +288,7 @@ header::after {
 }
 
 
-nav {
-    display: flex;
-    gap: 30px;
-    z-index: 2;
-}
 
-nav a {
-    text-decoration: none;
-    color: #ffffff;
-    font-size: 18px;
-    font-weight: bold;
-    padding: 10px 20px;
-    background-color: #66a3ff;
-    border: none;
-    border-radius: 30px;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-nav a:hover {
-    background-color: #1d6fd8;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
-    transform: translateY(-3px);
-}
 
 /* Estilo para el botón en la sección de contacto */
 .contact-info {
@@ -405,7 +477,7 @@ nav a:hover {
     font-weight: bold;
     color: #ffffff;
     /* Color del texto blanco */
-    background: #a2c2e3;
+    background: #1d6fd8;
     /* Fondo azul claro */
     border-radius: 10px;
     /* Bordes más redondeados */

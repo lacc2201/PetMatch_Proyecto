@@ -5,7 +5,7 @@
             <div class="logo">
                 <img src="../assets/logopetmatch.png" alt="PetMatch Logo">
             </div>
-            <h5 class="title">!Bienvenido Refugio!</h5>
+            <div class="header-title">Panel de Refugio</div>
             <nav>
                 <router-link to="/HomeR">INICIO</router-link>
                 <router-link to="/PetsR">MIS MASCOTAS</router-link>
@@ -18,16 +18,7 @@
                         alt="Perfil"></router-link>
             </div>
             <div class="contact-info">
-                <!-- Botón para abrir el modal -->
-                <a @click="showLogoutModal = true">Cerrar Sesión</a>
-                <!-- Modal de Cerrar Sesión -->
-                <div v-if="showLogoutModal" id="logoutModal" class="modal">
-                    <div class="modal-content">
-                        <h2>¿Estás seguro de que deseas cerrar sesión?</h2>
-                        <button @click="logout">Confirmar</button>
-                        <button @click="showLogoutModal = false">Cancelar</button>
-                    </div>
-                </div>
+                <router-link to="/login" class="contact-button">Cerrar Sesión</router-link>
             </div>
         </header>
 
@@ -170,6 +161,134 @@ export default {
 </script>
 
 <style scoped>
+/* Botón activo */
+nav a.active {
+    background-color: #1d6fd8; /* Color más oscuro */
+    color: #fff;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+/* Define la fuente principal del sitio */
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
+}
+
+/* Estilo para el header */
+/* Header inicial */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: #4a90e2;
+    padding: 20px 100px; /* Espaciado inicial */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom-left-radius: 80px;
+    border-bottom-right-radius: 80px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    height: 120px;
+    transition: all 0.3s ease-in-out; /* Transición suave */
+}
+
+/* Header reducido */
+header.shrink {
+    padding: 10px 80px; /* Reduce el padding */
+    height: 80px; /* Reduce la altura */
+    background-color: #4a90e2; /* Fondo más transparente */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Sombras más suaves */
+}
+
+/* Otros estilos existentes */
+.logo img {
+    width: 152px;
+    height: auto;
+    z-index: 2;
+    transition: transform 0.3s ease, width 0.3s ease; /* Transición de zoom y tamaño */
+}
+
+header.shrink .logo img {
+    width: 120px; /* Reduce el tamaño del logo */
+}
+
+nav {
+    display: flex;
+    gap: 30px;
+    z-index: 2;
+}
+
+nav a {
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 20px;
+    background-color: #66a3ff;
+    border: none;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+nav a:hover {
+    background-color: #1d6fd8;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-3px);
+}
+/* Estilos para los iconos en el header */
+.header-icons {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-right: 20px;
+        }
+
+        .header-icons a {
+            display: inline-block;
+            margin-left: 15px;
+        }
+
+        .header-icons img {
+            width: 70px;
+            height: 70px;
+            cursor: pointer;
+        }
+ /* Nuevo diseño del título */
+ .header-title {
+    font-size: 1.8rem; /* Tamaño de letra más pequeño */
+    font-weight: bold;
+    color: #ffffff; /* Azul intermedio */
+    margin-top: 5px;
+    font-family: 'Arial', sans-serif; /* Cambio de fuente */
+    position: relative;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2); /* Sombra suave */
+    margin-left: -33px; /* Ajuste hacia la izquierda */
+}
+        /* Animación al pasar el mouse */
+        .header-title:hover {
+            color: #e2b94a; /* Cambia el texto a dorado */
+            text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4); /* Aumenta el efecto de sombra */
+            transition: all 0.3s ease;
+        }
+
+        .header-title:hover:before {
+            background-color: #4A90E2; /* Cambia la línea a azul */
+            transition: background-color 0.3s ease;
+        }
+        /* Botón activo */
+nav a.active {
+    background-color: #1d6fd8; /* Color más oscuro */
+    color: #fff;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
 /* Define la fuente principal del sitio */
 body {
     font-family: Verdana, Geneva, Tahoma, sans-serif;

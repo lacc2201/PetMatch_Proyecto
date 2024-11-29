@@ -8,3 +8,4 @@ defineRule('required', (value) => {
   return value ? true : 'Este campo es obligatorio';
 });
 createApp(App).use(router).mount('#app');
+// main.js o el archivo principal de tu app

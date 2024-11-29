@@ -1,27 +1,23 @@
 <template>
     <div>
-        <!-- Header -->
-        <header>
+       <!-- Header -->
+       <header>
             <div class="logo">
                 <img src="../assets/logopetmatch.png" alt="PetMatch Logo">
             </div>
-            <h5 class="title">!Bienvenido Adoptante!</h5>
+            <div class="header-title">Panel de Adoptante</div>
             <nav>
                 <router-link to="/HomeA">INICIO</router-link>
                 <router-link to="/PetsA">PETS</router-link>
                 <router-link to="/ReviewsA">RESEÑAS</router-link>
             </nav>
+            <div class="header-icons">
+                <router-link to="/CalendarA"><img src="../assets/icon-calendar.png" alt="Calendario"></router-link>
+                <router-link to="/profileA"><img id="header-profile-icon" src="../assets/icon-profile.png"
+                        alt="Perfil"></router-link>
+            </div>
             <div class="contact-info">
-                <!-- Botón para abrir el modal -->
-                <a @click="showLogoutModal = true">Cerrar Sesión</a>
-                <!-- Modal de Cerrar Sesión -->
-                <div v-if="showLogoutModal" id="logoutModal" class="modal">
-                    <div class="modal-content">
-                        <h2>¿Estás seguro de que deseas cerrar sesión?</h2>
-                        <button @click="logout">Confirmar</button>
-                        <button @click="showLogoutModal = false">Cancelar</button>
-                    </div>
-                </div>
+                <a href="#" class="contact-button" id="logoutBtn">Cerrar Sesión</a>
             </div>
         </header>
 
@@ -31,25 +27,137 @@
                 Reseñas de Nuestros Clientes
             </div>
             <p1>Conoce las experiencias de quienes han encontrado un nuevo miembro para su familia.</p1>
-
             <div class="reviews-container">
-                <div v-for="(review, index) in reviews" :key="index" class="review-card">
-                    <div class="review-header">
-                        <img :src="review.clientPhoto" alt="Foto del Cliente" class="client-photo">
-                        <div class="client-info">
-                            <h3>{{ review.clientName }}</h3>
-                            <p class="review-date">{{ review.reviewDate }}</p>
+                <div class="reviews-container">
+
+                    <!-- Reseña 1 -->
+                    <div class="review-card">
+                        <div class="review-header">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEmDcOJVJewZiQ8TB74Lbbf1FFkK1CyAzEfA&s"
+                                alt="Foto del Cliente" class="client-photo">
+                            <div class="client-info">
+                                <h3>Juan Pérez</h3>
+                                <p class="review-date">12 de Agosto, 2023</p>
+                            </div>
+                            <div class="rating">
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
                         </div>
-                        <div class="rating" v-html="generatePawRating(review.rating)"></div>
+                        <div class="review-content">
+                            <div class="pet-photo">
+                                <img src="https://img.freepik.com/fotos-premium/labrador-retriever-negro-realista-sobre-deslumbrante-fondo-natural-al-aire-libre_31965-79641.jpg"
+                                    alt="Foto de la Mascota">
+                            </div>
+                            <div class="pet-info">
+                                <h4>Fido</h4>
+                                <p><strong>Estado de la Mascota:</strong> Saludable y lleno de energía.</p>
+                                <p>
+                                    Estoy muy contento con Fido, es un perro muy cariñoso y se adaptó rápidamente a
+                                    nuestra familia.
+                                    El proceso de adopción fue sencillo y el personal muy amable. ¡Recomiendo este lugar
+                                    a todos!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reseña 2 -->
+                    <div class="review-card">
+                        <div class="review-header">
+                            <img src="https://yt3.googleusercontent.com/r9z-sZf8TUgxfVVzWFlCwO_PvfQdNo-pTH8hgtkvDHjgcAP8qNrj1hvQNkmng1vGkgnxRpfEng=s900-c-k-c0x00ffffff-no-rj"
+                                alt="Foto del Cliente" class="client-photo">
+                            <div class="client-info">
+                                <h3>María López</h3>
+                                <p class="review-date">5 de Julio, 2023</p>
+                            </div>
+                            <div class="rating">
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                            </div>
+                        </div>
+                        <div class="review-content">
+                            <div class="pet-photo">
+                                <img src="https://img.freepik.com/fotos-premium/gato-siames-realista-sobre-deslumbrante-fondo-natural-al-aire-libre_31965-93050.jpg"
+                                    alt="Foto de la Mascota">
+                            </div>
+                            <div class="pet-info">
+                                <h4>Mimi</h4>
+                                <p><strong>Estado de la Mascota:</strong> Vacunada y esterilizada.</p>
+                                <p>
+                                    Luna es la gata más dulce que he conocido. Desde que llegó a casa ha llenado
+                                    nuestros días de alegría.
+                                    El servicio fue excelente y se aseguraron de que Luna estuviera en perfectas
+                                    condiciones. ¡Gracias!
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Reseña 3 -->
+                    <div class="review-card">
+                        <div class="review-header">
+                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSCoLCCWKS9kI-qwOBWloaQm0wlmOnUpuUfkQ&s"
+                                alt="Foto del Cliente" class="client-photo">
+                            <div class="client-info">
+                                <h3>Carlos García</h3>
+                                <p class="review-date">20 de Junio, 2023</p>
+                            </div>
+                            <div class="rating">
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star filled"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                            </div>
+                        </div>
+                        <div class="review-content">
+                            <div class="pet-photo">
+                                <img src="https://img.freepik.com/fotos-premium/pastor-aleman-realista-sobre-deslumbrante-fondo-natural-al-aire-libre_31965-98855.jpg"
+                                    alt="Foto de la Mascota">
+                            </div>
+                            <div class="pet-info">
+                                <h4>Max</h4>
+                                <p><strong>Estado de la Mascota:</strong> Ligera lesión en la pata trasera, en
+                                    recuperación.</p>
+                                <p>
+                                    Rex es un perro muy valiente y a pesar de su lesión se muestra muy juguetón.
+                                    El centro nos informó de todo y nos dio las indicaciones necesarias para su cuidado.
+                                    Estamos felices con él.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Reseña 1 -->
+                <div class="review-card" v-for="review in reviews" :key="review.id">
+                    <div class="review-header">
+                        <img :src="review.foto_adoptante" alt="Foto del Adoptante" class="client-photo">
+                        <div class="client-info">
+                            <h3>{{ review.nombre_adoptante }}</h3>
+                            <p class="review-date">{{ review.fecha_rese }}</p>
+                        </div>
+                        <div class="rating">
+                            <i v-for="i in 5" :key="i"
+                                :class="{ 'fas fa-star filled': i <= review.puntuacion, 'fas fa-star': i > review.puntuacion }"></i>
+                        </div>
                     </div>
                     <div class="review-content">
                         <div class="pet-photo">
-                            <img :src="review.petPhoto" alt="Foto de la Mascota">
+                            <img :src="review.foto_mascota" alt="Foto de la Mascota">
                         </div>
                         <div class="pet-info">
-                            <h4>{{ review.petName }}</h4>
-                            <p><strong>Estado de la Mascota:</strong> {{ review.petStatus }}</p>
-                            <p>{{ review.reviewText }}</p>
+                            <h4>{{ review.nombre_mascota }}</h4>
+                            <p><strong>Estado de la Mascota:</strong> {{ review.estado_mascota }}</p>
+                            <p>{{ review.comentario }}</p>
                         </div>
                     </div>
                 </div>
@@ -58,47 +166,53 @@
             <div class="add-review-button">
                 <button @click="openReviewModal">Agregar Reseña</button>
             </div>
-
-            <!-- Modal para agregar nueva reseña -->
-            <div v-if="isModalOpen" class="modal">
+            <div :class="['modal', { 'open': isModalOpen }]">
                 <div class="modal-content">
                     <span class="close-button" @click="closeReviewModal">&times;</span>
                     <h2>Agregar Nueva Reseña</h2>
                     <form @submit.prevent="submitReview">
-                        <label for="client-name">Nombre:</label>
-                        <input v-model="newReview.clientName" type="text" required>
+                        <!-- Contenido del formulario --> <!-- Modal para agregar nueva reseña -->
+                        <div v-if="isModalOpen" class="modal.open">
+                            <div class="modal-content">
+                                <span class="close-button" @click="closeReviewModal">&times;</span>
+                                <h2>Agregar Nueva Reseña</h2>
+                                <form @submit.prevent="submitReview">
+                                    <label for="adoptante-name">Nombre del Adoptante:</label>
+                                    <input v-model="newReview.nombre_adoptante" type="text" required>
 
-                        <label for="pet-name">Nombre de la Mascota:</label>
-                        <input v-model="newReview.petName" type="text" required>
+                                    <label for="pet-name">Nombre de la Mascota:</label>
+                                    <input v-model="newReview.mascota_id" type="text" required>
 
-                        <label for="pet-status">Estado de la Mascota:</label>
-                        <input v-model="newReview.petStatus" type="text" required>
+                                    <label for="pet-status">Estado de la Mascota:</label>
+                                    <input v-model="newReview.estado_mascota" type="text" required>
 
-                        <label for="review-text">Reseña:</label>
-                        <textarea v-model="newReview.reviewText" rows="5" required></textarea>
+                                    <label for="review-text">Reseña:</label>
+                                    <textarea v-model="newReview.comentario" rows="5" required></textarea>
 
-                        <div class="calificacion">
-                            <label>Calificación:</label>
-                            <div v-for="i in 5" :key="i">
-                                <input type="radio" :value="i" v-model="newReview.rating">
-                                <i class="fa fa-paw" :class="{ 'active': i <= newReview.rating }"></i>
+                                    <div class="calificacion">
+                                        <label>Calificación:</label>
+                                        <div v-for="i in 5" :key="i">
+                                            <input type="radio" :value="i" v-model="newReview.puntuacion">
+                                            <i class="fa fa-paw" :class="{ 'active': i <= newReview.puntuacion }"></i>
+                                        </div>
+                                    </div>
+
+                                    <label for="adoptante-photo">Foto del Adoptante:</label>
+                                    <input type="file" @change="handleAdoptantePhoto" accept="image/*">
+
+                                    <label for="pet-photo">Foto de la Mascota:</label>
+                                    <input type="file" @change="handlePetPhoto" accept="image/*">
+
+                                    <button type="submit">Enviar Reseña</button>
+                                </form>
                             </div>
                         </div>
-
-                        <label for="client-photo">Foto del Cliente:</label>
-                        <input type="file" @change="handleClientPhoto" accept="image/*">
-
-                        <label for="pet-photo">Foto de la Mascota:</label>
-                        <input type="file" @change="handlePetPhoto" accept="image/*">
-
-                        <button type="submit">Enviar Reseña</button>
                     </form>
                 </div>
             </div>
+
         </section>
-
-
-
+        <!-- Sección del Modal -->
         <div class="modal" id="logoutModal">
             <div class="modal-content">
                 <h2>Confirmar Cierre de Sesión</h2>
@@ -140,81 +254,211 @@
 </template>
 
 <script>
-export default {
-    name: "ReviewsAdoptante", // Cambia el nombre aquí
-    data() {
-    return {
-      isModalOpen: false,
-      reviews: [
-        // Aquí puedes inicializar reseñas preexistentes si deseas
-      ],
-      newReview: {
-        clientName: '',
-        petName: '',
-        petStatus: '',
-        reviewText: '',
-        rating: 0,
-        clientPhoto: '',
-        petPhoto: '',
-      }
-    };
-  },
-  methods: {
-    openReviewModal() {
-      this.isModalOpen = true;
-    },
-    closeReviewModal() {
-      this.isModalOpen = false;
-      this.resetNewReview();
-    },
-    resetNewReview() {
-      this.newReview = {
-        clientName: '',
-        petName: '',
-        petStatus: '',
-        reviewText: '',
-        rating: 0,
-        clientPhoto: '',
-        petPhoto: '',
-      };
-    },
-    submitReview() {
-      const formattedReview = {
-        ...this.newReview,
-        reviewDate: this.formatDate(new Date())
-      };
-      this.reviews.push(formattedReview);
-      this.closeReviewModal();
-    },
-    handleClientPhoto(event) {
-      const file = event.target.files[0];
-      if (file) {
-        this.newReview.clientPhoto = URL.createObjectURL(file);
-      }
-    },
-    handlePetPhoto(event) {
-      const file = event.target.files[0];
-      if (file) {
-        this.newReview.petPhoto = URL.createObjectURL(file);
-      }
-    },
-    generatePawRating(rating) {
-      let paws = '';
-      for (let i = 1; i <= 5; i++) {
-        paws += `<i class="fas fa-paw ${i <= rating ? 'filled' : ''}"></i>`;
-      }
-      return paws;
-    },
-    formatDate(date) {
-      const options = { year: 'numeric', month: 'long', day: 'numeric' };
-      return date.toLocaleDateString('es-ES', options);
-    }
-  }
-};
+import { db } from '../firebaseConfig'; // Asegúrate de que Firebase esté correctamente configurado
+import firebase from 'firebase/app';
+import 'firebase/auth';
 
+export default {
+    data() {
+        return {
+            reviews: [],
+            showLogoutModal: false,
+            isModalOpen: false,
+            newReview: {
+                adoptante_id: '', // ID del adoptante (usuario autenticado)
+                nombre_adoptante: '', // Nombre del adoptante
+                comentario: '', // Comentario de la reseña
+                fecha_rese: '', // Fecha de la reseña
+                mascota_id: '', // ID de la mascota
+                puntuacion: 0 // Puntuación de la reseña
+            }
+        };
+    },
+    methods: {
+        logout() {
+            // Cerrar sesión de Firebase Authentication
+            firebase.auth().signOut()
+                .then(() => {
+                    console.log('Sesión cerrada');
+                    this.showLogoutModal = false;
+                })
+                .catch((error) => {
+                    console.error('Error al cerrar sesión: ', error);
+                });
+        },
+        openReviewModal() {
+            this.isModalOpen = true;
+            console.log("Modal abierto: ", this.isModalOpen); // Esto debería mostrar 'true' en la consola
+        },
+        closeReviewModal() {
+            this.isModalOpen = false;
+            console.log("Modal cerrado: ", this.isModalOpen); // Esto debería mostrar 'false' en la consola
+        },
+        async submitReview() {
+            try {
+                // Obtener la fecha actual para la reseña
+                const currentDate = new Date().toLocaleDateString();
+
+                // Obtener la ID del adoptante (usuario autenticado)
+                const user = firebase.auth().currentUser;
+                if (!user) {
+                    console.log('No hay usuario autenticado');
+                    return; // Si no hay usuario autenticado, no se envía la reseña
+                }
+                const adoptante_id = user.uid; // ID del usuario autenticado
+
+                // Verificar que la mascota y la puntuación estén presentes
+                if (!this.newReview.mascota_id || this.newReview.puntuacion === 0) {
+                    console.error('Por favor ingrese la mascota y la puntuación');
+                    return;
+                }
+
+                // Datos de la reseña
+                const reviewData = {
+                    adoptante_id: adoptante_id,
+                    nombre_adoptante: this.newReview.nombre_adoptante,
+                    comentario: this.newReview.comentario,
+                    fecha_rese: currentDate,
+                    mascota_id: this.newReview.mascota_id, // ID de la mascota
+                    puntuacion: this.newReview.puntuacion // Puntuación de la reseña
+                };
+
+                // Guardar la reseña en la colección 'resenas' de Firestore
+                await db.collection('resenas').add(reviewData);
+                console.log('Reseña enviada correctamente');
+
+                // Cerrar el modal y limpiar el formulario después de enviar la reseña
+                this.isModalOpen = false;
+                this.resetForm();
+            } catch (error) {
+                console.error('Error al enviar la reseña:', error);
+            }
+        },
+
+        // Método para resetear el formulario
+        resetForm() {
+            this.newReview = {
+                adoptante_id: '',
+                nombre_adoptante: '',
+                comentario: '',
+                fecha_rese: '',
+                mascota_id: '',
+                puntuacion: 0
+            };
+        }
+    }
+};
 </script>
 
+
 <style scoped>
+/* Botón activo */
+nav a.active {
+    background-color: #1d6fd8; /* Color más oscuro */
+    color: #fff;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+/* Define la fuente principal del sitio */
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
+}
+
+/* Estilo para el header */
+/* Header inicial */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: #4a90e2;
+    padding: 20px 100px; /* Espaciado inicial */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom-left-radius: 80px;
+    border-bottom-right-radius: 80px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    height: 120px;
+    transition: all 0.3s ease-in-out; /* Transición suave */
+}
+
+/* Header reducido */
+header.shrink {
+    padding: 10px 80px; /* Reduce el padding */
+    height: 80px; /* Reduce la altura */
+    background-color: #4a90e2; /* Fondo más transparente */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Sombras más suaves */
+}
+
+/* Otros estilos existentes */
+.logo img {
+    width: 152px;
+    height: auto;
+    z-index: 2;
+    transition: transform 0.3s ease, width 0.3s ease; /* Transición de zoom y tamaño */
+}
+
+header.shrink .logo img {
+    width: 120px; /* Reduce el tamaño del logo */
+}
+
+nav {
+    display: flex;
+    gap: 30px;
+    z-index: 2;
+}
+
+nav a {
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 20px;
+    background-color: #66a3ff;
+    border: none;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+nav a:hover {
+    background-color: #1d6fd8;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-3px);
+}
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Fondo semitransparente */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    /* Asegura que esté encima de otros elementos */
+}
+
+.modal.open {
+    display: flex;
+    /* El modal será visible solo si tiene la clase 'open' */
+}
+
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+
 /* Estilos para los iconos en el header */
 .header-icons {
     display: flex;
@@ -240,6 +484,151 @@ export default {
 .modal {
     display: none;
     /* Ocultar el modal por defecto */
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+    padding-top: 60px;
+}
+
+
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.review-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.review-form label {
+    margin: 10px 0 5px;
+}
+
+.review-form input,
+.review-form textarea {
+    margin-bottom: 10px;
+}
+
+.star-rating {
+    display: flex;
+    align-items: center;
+}
+
+.star-rating input[type="radio"] {
+    display: none;
+}
+
+.star-rating label {
+    font-size: 24px;
+    color: #ccc;
+    cursor: pointer;
+}
+
+.star-rating input[type="radio"]:checked~label {
+    color: #f39c12;
+}
+
+.calificacion {
+    display: flex;
+    gap: 10px;
+}
+
+/* Nuevo diseño del título */
+.header-title {
+    font-size: 1.5rem;
+    /* Tamaño de letra más pequeño */
+    font-weight: bold;
+    color: #ffffff;
+    /* Azul intermedio */
+    margin-top: 5px;
+    font-family: 'Arial', sans-serif;
+    /* Cambio de fuente */
+    position: relative;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    /* Sombra suave */
+    margin-left: -33px;
+    /* Ajuste hacia la izquierda */
+}
+
+/* Animación al pasar el mouse */
+.header-title:hover {
+    color: #e2b94a;
+    /* Cambia el texto a dorado */
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+    /* Aumenta el efecto de sombra */
+    transition: all 0.3s ease;
+}
+
+.header-title:hover:before {
+    background-color: #4A90E2;
+    /* Cambia la línea a azul */
+    transition: background-color 0.3s ease;
+}
+
+/* Botón activo */
+nav a.active {
+    background-color: #1d6fd8;
+    /* Color más oscuro */
+    color: #fff;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+}
+
+.calificacion i.active {
+    color: gold;
+}
+
+/* Estilos para los iconos en el header */
+.header-icons {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.header-icons a {
+    display: inline-block;
+    margin-left: 15px;
+}
+
+.header-icons img {
+    width: 70px;
+    /* Aumentar el tamaño de los íconos */
+    height: 70px;
+    /* Aumentar el tamaño de los íconos */
+    cursor: pointer;
+}
+
+/* Estilos para el modal */
+.modal {
+    display: block;
     position: fixed;
     z-index: 1;
     left: 0;
@@ -312,6 +701,50 @@ export default {
     gap: 10px;
 }
 
+/* Nuevo diseño del título */
+.header-title {
+    font-size: 1.5rem;
+    /* Tamaño de letra más pequeño */
+    font-weight: bold;
+    color: #ffffff;
+    /* Azul intermedio */
+    margin-top: 5px;
+    font-family: 'Arial', sans-serif;
+    /* Cambio de fuente */
+    position: relative;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    /* Sombra suave */
+    margin-left: -33px;
+    /* Ajuste hacia la izquierda */
+}
+
+/* Animación al pasar el mouse */
+.header-title:hover {
+    color: #e2b94a;
+    /* Cambia el texto a dorado */
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+    /* Aumenta el efecto de sombra */
+    transition: all 0.3s ease;
+}
+
+.header-title:hover:before {
+    background-color: #4A90E2;
+    /* Cambia la línea a azul */
+    transition: background-color 0.3s ease;
+}
+
+/* Botón activo */
+nav a.active {
+    background-color: #1d6fd8;
+    /* Color más oscuro */
+    color: #fff;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+
 /* Define la fuente principal del sitio */
 body {
     font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -334,13 +767,14 @@ header {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
     overflow: hidden;
     height: 120px;
+    /* Reduce el tamaño del área azul */
 }
 
 /* Estilo de nube en la parte inferior del header */
 header::after {
     content: '';
     position: absolute;
-    bottom: -60px;
+    bottom: -50px;
     left: 0;
     width: 90%;
     height: 80px;
@@ -349,9 +783,8 @@ header::after {
     z-index: 1;
 }
 
-
 .logo img {
-    width: 185px;
+    width: 152px;
     height: auto;
     z-index: 2;
     transition: transform 0.3s ease;
@@ -417,6 +850,15 @@ nav a:hover {
     /* Color más oscuro para el hover */
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
     transform: translateY(-3px);
+}
+
+/* Botón activo */
+nav a.active {
+    background-color: #1d6fd8;
+    /* Color más oscuro */
+    color: #fff;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
 }
 
 
@@ -576,14 +1018,18 @@ nav a:hover {
     font-weight: bold;
     color: #ffffff;
     /* Color del texto blanco */
-    background: #a2c2e3;
+    background: #4a90e2;
     /* Fondo azul claro */
     border-radius: 10px;
     /* Bordes más redondeados */
     padding: 10px 20px;
     /* Espaciado interno reducido */
     text-align: center;
+    margin: 0 auto;
+    /* Centrar horizontalmente */
     margin-bottom: 20px;
+    max-width: 600px;
+    /* Limitar el ancho máximo */
     position: relative;
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -621,6 +1067,7 @@ nav a:hover {
     border-radius: 50%;
     z-index: 1;
 }
+
 
 @keyframes shadowPulse {
 
@@ -797,16 +1244,16 @@ footer {
 }
 
 .footer-section img {
-    width: 205px;
+    width: 165px;
     /* Aumentar el tamaño de la imagen del logo */
-    margin-bottom: -5px;
+    margin-bottom: -10px;
     /* Reducir el margen inferior para acercar los íconos al logo */
 }
 
 .social-icons {
     display: flex;
     justify-content: center;
-    margin-top: -25px;
+    margin-top: -40px;
     /* Reducir el margen superior para acercar los íconos al logo */
 }
 
@@ -887,7 +1334,9 @@ footer {
 
 /* Animación de parpadeo en las patas */
 .paw-icon {
-    animation: paw-blink 1.5s infinite alternate;
+    font-size: 30px;
+    color: lightgray;
+    cursor: pointer;
 }
 
 @keyframes paw-blink {
@@ -939,9 +1388,12 @@ main {
     display: flex;
     justify-content: center;
     -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    background-color: rgba(255, 223, 0, 0.6);
-    /* Amarillo claro con opacidad */
+    backdrop-filter: blur(80px);
+    background: rgba(0, 47, 108, 0.95);
+    /* Azul oscuro con opacidad alta */
+    background-image: url('../assets/fondo-caja.png');
+    background-size: cover;
+    background-position: center;
     border-radius: 15px;
     /* Bordes redondeados */
     margin: auto;
@@ -950,7 +1402,7 @@ main {
 
 .caja__trasera div {
     margin: 100px 50px;
-    color: #002f6c;
+    color: #fff;
     /* Azul oscuro para el texto */
     transition: all 500ms;
 }
@@ -1000,12 +1452,12 @@ main {
 
 .caja__trasera button {
     padding: 10px 50px;
-    border: 2px solid #002f6c;
+    border: 2px solid #4a90e2;
     /* Azul oscuro */
     font-size: 16px;
-    background: #f9c74f;
+    background: transparent;
     /* Amarillo dorado */
-    color: #002f6c;
+    color: #fff;
     /* Azul oscuro */
     font-weight: 600;
     cursor: pointer;
@@ -1018,7 +1470,7 @@ main {
 .caja__trasera button:hover {
     background: #f9c74f;
     /* Amarillo dorado */
-    color: #002f6c;
+    color: #4a90e2;
     /* Azul oscuro */
 }
 
@@ -1234,7 +1686,8 @@ form select option {
     font-size: 2rem;
     font-weight: bold;
     margin-bottom: 20px;
-    color: #333;
+    color: #ffffff;
+    margin: 0;
 }
 
 .reviews-section p1 {
@@ -1248,6 +1701,9 @@ form select option {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
 }
 
 .review-card {
@@ -1256,6 +1712,8 @@ form select option {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
     text-align: left;
+    width: 30%;
+    margin-bottom: 20px;
 }
 
 .review-header {
@@ -1264,10 +1722,19 @@ form select option {
     margin-bottom: 20px;
 }
 
+/* Estilo para la foto del cliente en las reseñas */
 .client-photo {
+    width: 80px;
+    /* Ajusta el tamaño según el diseño */
+    height: 80px;
+    /* Mantén el aspecto cuadrado */
     border-radius: 50%;
+    /* Asegura que la imagen sea circular */
     margin-right: 15px;
+    object-fit: cover;
+    /* Mantiene la proporción de la imagen */
 }
+
 
 .client-info h3 {
     margin: 0;
@@ -1290,17 +1757,37 @@ form select option {
     margin-left: 5px;
 }
 
+/* Estilo para el contenido de la reseña */
 .review-content {
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    /* Espacio entre la imagen y la información */
 }
 
+/* Estilo para la foto de la mascota en las reseñas */
 .pet-photo img {
-    width: 100%;
+    width: 150px;
+    /* Ajusta el tamaño según el diseño */
+    height: auto;
+    /* Mantiene la proporción de la imagen */
     border-radius: 10px;
-    margin-bottom: 20px;
+    /* Añade bordes redondeados si es necesario */
+    object-fit: cover;
+    /* Mantiene la proporción de la imagen */
 }
 
+/* Estilo para la información de la mascota */
+.pet-info {
+    flex: 1;
+    /* Permite que la información ocupe el espacio restante */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    /* Espacio entre los elementos dentro de la información */
+}
+
+/* Ajusta el tamaño del texto en la información de la mascota */
 .pet-info h4 {
     font-size: 1.4rem;
     margin-bottom: 10px;
@@ -1408,5 +1895,38 @@ form select option {
 
 .review-form button:hover {
     background-color: #f9c74f;
+}
+
+.paw-rating label {
+    font-size: 24px;
+    color: #ccc;
+    cursor: pointer;
+}
+
+.paw-rating input[type="radio"]:checked~label {
+    color: #f39c12;
+}
+
+.review-row {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+input[type="radio"]:checked+.paw-icon {
+    color: orange;
+}
+
+.paw-icon:hover {
+    color: darkorange;
+}
+
+.paw-icon.active {
+    color: orange;
 }
 </style>

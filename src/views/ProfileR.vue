@@ -5,7 +5,7 @@
             <div class="logo">
                 <img src="../assets/logopetmatch.png" alt="PetMatch Logo">
             </div>
-            <h5 class="title">!Bienvenido Refugio!</h5>
+            <div class="header-title">Panel de Refugio</div>
             <nav>
                 <router-link to="/HomeR">INICIO</router-link>
                 <router-link to="/PetsR">MIS MASCOTAS</router-link>
@@ -18,61 +18,48 @@
                         alt="Perfil"></router-link>
             </div>
             <div class="contact-info">
-                <!-- Botón para abrir el modal -->
-                <a @click="showLogoutModal = true">Cerrar Sesión</a>
-                <!-- Modal de Cerrar Sesión -->
-                <div v-if="showLogoutModal" id="logoutModal" class="modal">
-                    <div class="modal-content">
-                        <h2>¿Estás seguro de que deseas cerrar sesión?</h2>
-                        <button @click="logout">Confirmar</button>
-                        <button @click="showLogoutModal = false">Cancelar</button>
-                    </div>
-                </div>
+                <router-link to="/login" class="contact-button">Cerrar Sesión</router-link>
             </div>
         </header>
 
-        <div id="profile-container">
-            <h2 style="text-align: center; font-family: 'Arial', sans-serif; color: #f9c74f;">🐾Perfil del Refugio🐾
-            </h2>
-            <img id="profile-pic" src="" alt="Foto de perfil">
-            <div class="profile-info">
-                <p><strong>Nombre:</strong> <span id="profile-name">Carlos García</span></p>
-                <p><strong>Email:</strong> <span id="profile-email">carlos.garcia@example.com</span></p>
-                <p><strong>Teléfono:</strong> <span id="profile-phone">987-654-3210</span></p>
-                <p><strong>Dirección:</strong> <span id="profile-address">Avenida Siempre Viva 742</span></p>
-                <p><strong>Número de Ventas:</strong> <span id="profile-sales">50</span></p>
-                <p><strong>Mascotas en Venta:</strong> <span id="profile-pets">5</span></p>
-                <p><strong>Calificación:</strong> ⭐⭐⭐⭐</p>
+        <div id="profile-container" v-if="!isEditing">
+            <h2 style="text-align: center; font-family: 'Arial', sans-serif; color: #f9c74f;">🐾Perfil de Refugio🐾</h2>
+            <img id="profile-pic" :src="userData.fotoPerfil" alt="Foto de perfil">
+            <div v-if="userData" class="profile-info">
+                <p><strong>Nombre:</strong> <span>{{ userData.nombre }}</span></p>
+                <p><strong>Edad:</strong> <span>{{ userData.edad }}</span></p>
+                <p><strong>Email:</strong> <span>{{ userData.email }}</span></p>
+                <p><strong>Teléfono:</strong> <span>{{ userData.telefono }}</span></p>
+                <p><strong>Dirección:</strong> <span>{{ userData.direccion }}</span></p>
+                <p><strong>Preferencia de Mascotas:</strong> <span>{{ userData.preferenciaMascota }}</span></p>
             </div>
-            <button id="edit-profile-button">Editar Perfil</button>
+            <div v-else>
+                <p>Cargando datos del usuario...</p>
+            </div>
+            <button @click="editProfile">Editar Perfil</button>
         </div>
 
-        <div id="edit-profile-container" style="display: none;">
+        <!-- Edit Profile Form -->
+        <div v-if="isEditing" id="edit-profile-container">
             <h2 style="text-align: center; font-family: 'Arial', sans-serif; color: #f9c74f;">🐾Editar Perfil🐾</h2>
-            <form id="edit-profile-form">
+            <form @submit.prevent="saveProfile">
                 <label for="profile-pic-input">Foto de Perfil:</label>
-                <input type="file" id="profile-pic-input" accept="image/*">
+                <input type="file" id="profile-pic-input" accept="image/*" @change="uploadProfilePic">
                 <br>
                 <label for="name">Nombre:</label>
-                <input type="text" id="name" value="Carlos García">
+                <input type="text" v-model="userData.nombre" id="name">
                 <br>
                 <label for="email">Email:</label>
-                <input type="email" id="email" value="carlos.garcia@example.com">
+                <input type="email" v-model="userData.email" id="email">
                 <br>
                 <label for="phone">Teléfono:</label>
-                <input type="text" id="phone" value="987-654-3210">
+                <input type="text" v-model="userData.telefono" id="phone">
                 <br>
                 <label for="address">Dirección:</label>
-                <input type="text" id="address" value="Avenida Siempre Viva 742">
+                <input type="text" v-model="userData.direccion" id="address">
                 <br>
-                <label for="sales">Número de Ventas:</label>
-                <input type="number" id="sales" value="50">
-                <br>
-                <label for="pets">Mascotas en Venta:</label>
-                <input type="number" id="pets" value="5">
-                <br>
-                <label for="rating">Calificación:</label>
-                <input type="text" id="rating" value="⭐⭐⭐⭐">
+                <label for="pet-preference">Preferencia de Mascotas:</label>
+                <input type="text" v-model="userData.preferenciaMascota" id="pet-preference">
                 <br>
                 <button type="submit">Guardar Cambios</button>
             </form>
@@ -111,19 +98,188 @@
 </template>
 
 <script>
+import { doc, getDoc, updateDoc } from "firebase/firestore"; // Importación corregida
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage"; // Importación de Storage
+import { db, storage } from "../firebaseConfig"; // Asegúrate de que db esté correctamente exportado desde firebaseConfig
+
 export default {
-    name: "ProfileRefugio"
+    name: "ProfileAdoptante",
+    data() {
+        return {
+            userData: {
+                nombre: "",
+                email: "",
+                telefono: "",
+                direccion: "",
+                fotoPerfil: "",
+                preferenciaMascota: "",
+            },
+            isEditing: false,
+            showLogoutModal: false,
+        };
+    },
+    async mounted() {
+        try {
+            const usuarioId = "vbsPjyluNjbA1Cr85AArQrvcVdB2";  // ID del usuario actual
+            await this.loadUserData(usuarioId);
+
+            if (this.userData.rol !== 'Refugio') {
+                // Redirige o muestra un mensaje si no es un refugio
+                this.$router.push('/'); // O el lugar adecuado
+                alert('Acceso denegado: Solo los refugios pueden acceder a esta página.');
+            }
+        } catch (error) {
+            console.error("Error al cargar los datos del usuario:", error);
+        }
+    },
+
+    methods: {
+        async loadUserData(usuarioId) {
+            try {
+                const userRef = doc(db, "usuarios", usuarioId); // Corrección: uso de la función doc para obtener el documento
+                const userDoc = await getDoc(userRef); // Obtener el documento
+                if (userDoc.exists()) {
+                    this.userData = userDoc.data(); // Cargar los datos
+                } else {
+                    console.log("No se encontró el documento de usuario.");
+                }
+            } catch (error) {
+                console.error("Error al cargar los datos del usuario:", error);
+            }
+        },
+        editProfile() {
+            this.isEditing = true;
+        },
+        async uploadProfilePic(event) {
+            const file = event.target.files[0];
+            if (!file) {
+                console.error("No file selected");
+                return;
+            }
+
+            try {
+                const storageRef = ref(storage, `profile_pics/${file.name}`); // Referencia al almacenamiento de Firebase
+                await uploadBytes(storageRef, file); // Subir la imagen
+                const downloadURL = await getDownloadURL(storageRef); // Obtener la URL de descarga
+                this.userData.fotoPerfil = downloadURL; // Asignar la URL de la imagen al perfil
+            } catch (error) {
+                console.error("Error al subir la imagen:", error);
+            }
+        },
+        async saveProfile() {
+            try {
+                const usuarioId = "vbsPjyluNjbA1Cr85AArQrvcVdB2"; // ID del usuario actual
+                const userRef = doc(db, "usuarios", usuarioId); // Referencia al documento de usuario
+                await updateDoc(userRef, {
+                    nombre: this.userData.nombre,
+                    email: this.userData.email,
+                    telefono: this.userData.telefono,
+                    direccion: this.userData.direccion,
+                    fotoPerfil: this.userData.fotoPerfil,
+                    preferenciaMascota: this.userData.preferenciaMascota
+                }); // Guardar los datos actualizados
+                this.isEditing = false;
+                await this.loadUserData(usuarioId); // Recargar los datos del usuario
+            } catch (error) {
+                console.error("Error al guardar los cambios:", error);
+            }
+        },
+        logout() {
+            // Lógica para cerrar sesión
+        }
+    },
 };
 </script>
 
+
 <style scoped>
+/* Botón activo */
+nav a.active {
+    background-color: #1d6fd8; /* Color más oscuro */
+    color: #fff;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+/* Define la fuente principal del sitio */
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
+}
+
+/* Estilo para el header */
+/* Header inicial */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: #4a90e2;
+    padding: 20px 100px; /* Espaciado inicial */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom-left-radius: 80px;
+    border-bottom-right-radius: 80px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    height: 120px;
+    transition: all 0.3s ease-in-out; /* Transición suave */
+}
+
+/* Header reducido */
+header.shrink {
+    padding: 10px 80px; /* Reduce el padding */
+    height: 80px; /* Reduce la altura */
+    background-color: #4a90e2; /* Fondo más transparente */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Sombras más suaves */
+}
+
+/* Otros estilos existentes */
+.logo img {
+    width: 152px;
+    height: auto;
+    z-index: 2;
+    transition: transform 0.3s ease, width 0.3s ease; /* Transición de zoom y tamaño */
+}
+
+header.shrink .logo img {
+    width: 120px; /* Reduce el tamaño del logo */
+}
+
+nav {
+    display: flex;
+    gap: 30px;
+    z-index: 2;
+}
+
+nav a {
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 20px;
+    background-color: #66a3ff;
+    border: none;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+nav a:hover {
+    background-color: #1d6fd8;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-3px);
+}
 /* Estilos generales para la caja del perfil */
 #profile-container,
 #edit-profile-container {
     border: 2px solid #f9c74f;
     padding: 30px;
+    /* Aumentar padding para más espacio interno */
     border-radius: 10px;
     max-width: 600px;
+    /* Aumentar el tamaño máximo de la caja */
     margin: 50px auto;
     background-color: #ffffff;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
@@ -133,6 +289,7 @@ export default {
 #profile-container img {
     display: block;
     margin: 0 auto 30px auto;
+    /* Aumentar espacio inferior para más separación */
     border-radius: 50%;
     width: 150px;
     height: 150px;
@@ -154,7 +311,7 @@ button {
 }
 
 button:hover {
-    background-color: #f08c00;
+    background-color: #f9c74f;
 }
 
 /* Estilos para la información del perfil */
@@ -167,6 +324,7 @@ button:hover {
 
 .profile-info p {
     margin: 15px 0;
+    /* Aumentar espacio entre párrafos para más separación */
     font-size: 16px;
 }
 
@@ -176,8 +334,7 @@ button:hover {
     color: #555;
 }
 
-#edit-profile-form input,
-#edit-profile-form textarea {
+#edit-profile-form input {
     margin-bottom: 15px;
     width: calc(100% - 22px);
     padding: 8px 10px;
@@ -185,9 +342,10 @@ button:hover {
     border-radius: 5px;
 }
 
-/* Estilos para el modal de edicion */
-#edit-profile-container {
-    display: none;
+/* Estilo específico para el campo de Preferencia de Mascotas */
+#pet-preference {
+    height: 40px;
+    /* Aumenta la altura del campo de entrada */
 }
 
 /* Estilos para los iconos en el header */
@@ -209,6 +367,41 @@ button:hover {
     height: 70px;
     /* Aumentar el tamaño de los íconos */
     cursor: pointer;
+}
+
+/* Nuevo diseño del título */
+.header-title {
+    font-size: 1.5rem;
+    /* Tamaño de letra más pequeño */
+    font-weight: bold;
+    color: #ffffff;
+    /* Azul intermedio */
+    margin-top: 5px;
+    font-family: 'Arial', sans-serif;
+    /* Cambio de fuente */
+    position: relative;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    /* Sombra suave */
+    margin-left: -33px;
+    /* Ajuste hacia la izquierda */
+}
+
+/* Animación al pasar el mouse */
+.header-title:hover {
+    color: #e2b94a;
+    /* Cambia el texto a dorado */
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+    /* Aumenta el efecto de sombra */
+    transition: all 0.3s ease;
+}
+
+.header-title:hover:before {
+    background-color: #4A90E2;
+    /* Cambia la línea a azul */
+    transition: background-color 0.3s ease;
 }
 
 /* Define la fuente principal del sitio */

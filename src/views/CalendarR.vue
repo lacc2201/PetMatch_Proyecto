@@ -5,38 +5,29 @@
             <div class="logo">
                 <img src="../assets/logopetmatch.png" alt="PetMatch Logo">
             </div>
-            <h5 class="title">!Bienvenido Refugio!</h5>
+            <div class="header-title">Panel de Refugio</div>
             <nav>
                 <router-link to="/HomeR">INICIO</router-link>
                 <router-link to="/PetsR">MIS MASCOTAS</router-link>
                 <router-link to="/ReviewsR">RESEÑAS</router-link>
             </nav>
-            
+
             <div class="header-icons">
                 <router-link to="/CalendarR"><img src="../assets/icon-calendar.png" alt="Calendario"></router-link>
                 <router-link to="/profileR"><img id="header-profile-icon" src="../assets/icon-profile.png"
                         alt="Perfil"></router-link>
             </div>
             <div class="contact-info">
-                <!-- Botón para abrir el modal -->
-                <a @click="showLogoutModal = true">Cerrar Sesión</a>
-                <!-- Modal de Cerrar Sesión -->
-                <div v-if="showLogoutModal" id="logoutModal" class="modal">
-                    <div class="modal-content">
-                        <h2>¿Estás seguro de que deseas cerrar sesión?</h2>
-                        <button @click="logout">Confirmar</button>
-                        <button @click="showLogoutModal = false">Cancelar</button>
-                    </div>
-                </div>
+                <router-link to="/login" class="contact-button">Cerrar Sesión</router-link>
             </div>
         </header>
 
-        <div id="calendar-container">
+        <div id="calendar-container" v-if="isLoaded">
             <div id="event-list-container">
                 <h2>Eventos</h2>
                 <ul id="event-list">
                     <li v-for="event in events" :key="event.id" :style="{ backgroundColor: event.color }" class="event"
-                        draggable="true" @dragstart="startDrag(event)">
+                        draggable="true" @dragstart="startDrag($event, event)">
                         {{ event.name }}
                     </li>
                 </ul>
@@ -59,12 +50,11 @@
             </div>
 
             <div id="calendar-table-container">
-                <div id="calendar-navigation">
+                <div class="calendar-navigation">
                     <button @click="prevMonth">&lt;</button>
-                    <span>{{ currentMonthName }} {{ currentYear }}</span>
+                    <h2>{{ currentMonthName }} {{ currentYear }}</h2>
                     <button @click="nextMonth">&gt;</button>
                 </div>
-
                 <table id="calendar-table">
                     <thead>
                         <tr>
@@ -80,8 +70,14 @@
                     <tbody>
                         <tr v-for="week in calendarWeeks" :key="week[0].date">
                             <td v-for="day in week" :key="day.date" :class="{ 'other-month': day.isOtherMonth }"
-                                @dragover.prevent @drop="dropEvent(day)">
-                                {{ day.day }}
+                                @dragover.prevent @drop="dropEvent($event, day)" class="calendar-day">
+                                <div class="day-number">{{ day.day }}</div>
+                                <div class="day-events">
+                                    <div v-for="event in getEventsForDay(day)" :key="event.id" class="calendar-event"
+                                        :style="{ backgroundColor: event.color }">
+                                        {{ event.evento }}
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     </tbody>
@@ -121,11 +117,18 @@
         </footer>
     </div>
 </template>
+
 <script>
+import { doc } from "firebase/firestore";
+import { updateDoc } from "firebase/firestore";
+import { db } from "@/firebaseConfig";
+import { collection, getDocs } from "firebase/firestore";
+
 export default {
-    name: "CalendarRefugio",
+    name: "CalendarAdoptante",
     data() {
         return {
+            isLoaded: false,
             currentDate: new Date(),
             newEventName: "",
             newEventColor: "#4CAF50",
@@ -136,6 +139,8 @@ export default {
                 { id: 4, name: "Buscar Mascotas", color: "#2196F3" }
             ],
             draggedEvent: null,
+            citas: [],
+            showLogoutModal: false,
         };
     },
     computed: {
@@ -153,71 +158,433 @@ export default {
             return monthNames[this.currentMonth];
         },
         calendarWeeks() {
+            if (!this.currentDate) return [];
+
             const firstDayIndex = new Date(this.currentYear, this.currentMonth, 1).getDay();
             const lastDay = new Date(this.currentYear, this.currentMonth + 1, 0).getDate();
             const prevLastDay = new Date(this.currentYear, this.currentMonth, 0).getDate();
 
             let days = [];
             let week = [];
-            // Fill previous month's days
+
+            // Previous month days
             for (let i = firstDayIndex; i > 0; i--) {
-                week.push({ day: prevLastDay - i + 1, isOtherMonth: true });
+                week.push({
+                    day: prevLastDay - i + 1,
+                    isOtherMonth: true,
+                    date: new Date(this.currentYear, this.currentMonth - 1, prevLastDay - i + 1)
+                });
             }
 
-            // Fill current month's days
+            // Current month days
             for (let i = 1; i <= lastDay; i++) {
+                week.push({
+                    day: i,
+                    isOtherMonth: false,
+                    date: new Date(this.currentYear, this.currentMonth, i)
+                });
                 if (week.length === 7) {
                     days.push(week);
                     week = [];
                 }
-                week.push({ day: i, isOtherMonth: false });
             }
 
-            // Fill next month's days to complete the last week
-            const nextDays = 7 - week.length;
-            for (let i = 1; i <= nextDays; i++) {
-                week.push({ day: i, isOtherMonth: true });
+            // Next month days
+            let nextMonthDay = 1;
+            while (week.length < 7) {
+                week.push({
+                    day: nextMonthDay,
+                    isOtherMonth: true,
+                    date: new Date(this.currentYear, this.currentMonth + 1, nextMonthDay)
+                });
+                nextMonthDay++;
             }
-            days.push(week);
+            if (week.length > 0) {
+                days.push(week);
+            }
 
             return days;
-        },
+        }
     },
     methods: {
-        renderCalendar() {
-            // Se puede omitir ya que el calendario es reactivo.
+        formatDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
         },
-        addEvent() {
-            if (this.newEventName.trim()) {
-                this.events.push({
-                    id: this.events.length + 1,
-                    name: this.newEventName.trim(),
-                    color: this.newEventColor,
-                });
+
+
+        async initialize() {
+            try {
+                await this.fetchCitas();
+                this.isLoaded = true;
+            } catch (error) {
+                console.error("Error initializing:", error);
+            }
+        },
+
+        async fetchCitas() {
+            try {
+                const citasRef = collection(db, "citas");
+                const querySnapshot = await getDocs(citasRef);
+                this.citas = querySnapshot.docs.map(doc => ({
+                    id: doc.id,
+                    ...doc.data()
+                }));
+            } catch (error) {
+                console.error("Error al cargar citas:", error);
+            }
+        },
+
+        getEventsForDay(day) {
+            if (!day || !day.date) return [];
+            const dateString = this.formatDate(day.date);
+            return this.citas.filter(cita => cita.fecha === dateString);
+        },
+
+        startDrag(evt, draggedEvent) {
+            if (evt && draggedEvent) {
+                this.draggedEvent = draggedEvent;
+                evt.dataTransfer.effectAllowed = 'move';
+                evt.dataTransfer.setData('text/plain', JSON.stringify(draggedEvent));
+            }
+        },
+
+        async dropEvent(evt, day) {
+            if (!evt || !day || !this.draggedEvent) return;
+
+            evt.preventDefault();
+            const dateString = this.formatDate(day.date);
+
+            try {
+                // Assuming you want to update the event's date in Firestore
+                const updatedEvent = {
+                    ...this.draggedEvent,
+                    fecha: dateString
+                };
+
+                // Update the event in Firestore
+                const eventRef = doc(db, "citas", this.draggedEvent.id);
+                await updateDoc(eventRef, { fecha: dateString });
+
+                // Update the event locally as well
+                const eventIndex = this.citas.findIndex(cita => cita.id === this.draggedEvent.id);
+                if (eventIndex !== -1) {
+                    this.citas[eventIndex].fecha = dateString;  // Update the local data
+                }
+
+                // Make sure `updatedEvent` is used after updating both Firestore and local state.
+                console.log(updatedEvent);  // You can remove this line after debugging
+
+            } catch (error) {
+                console.error("Error updating event:", error);
+            }
+        }
+        ,
+
+        async addEvent() {
+            if (this.newEventName) {
+                const newEvent = {
+                    id: Date.now(),
+                    name: this.newEventName,
+                    color: this.newEventColor
+                };
+
+                this.events.push(newEvent);
                 this.newEventName = "";
+                this.newEventColor = "#4CAF50";
             }
         },
-        startDrag(event) {
-            this.draggedEvent = event;
-        },
-        dropEvent(day) {
-            if (this.draggedEvent && !day.isOtherMonth) {
-                const eventCopy = { ...this.draggedEvent };
-                // Aquí puedes agregar lógica para asociar el evento con la fecha.
-                console.log(`Evento ${eventCopy.name} asignado al día ${day.day}`);
-                this.draggedEvent = null;
-            }
-        },
+
         prevMonth() {
-            this.currentDate.setMonth(this.currentDate.getMonth() - 1);
+            const newDate = new Date(this.currentDate);
+            newDate.setMonth(newDate.getMonth() - 1);
+            this.currentDate = newDate;
         },
+
         nextMonth() {
-            this.currentDate.setMonth(this.currentDate.getMonth() + 1);
+            const newDate = new Date(this.currentDate);
+            newDate.setMonth(newDate.getMonth() + 1);
+            this.currentDate = newDate;
         },
+
+        logout() {
+            this.showLogoutModal = false;
+        }
     },
+    async created() {
+        await this.initialize();
+    }
 };
 </script>
-<style>
+<style scoped>
+/* Botón activo */
+nav a.active {
+    background-color: #1d6fd8; /* Color más oscuro */
+    color: #fff;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-2px);
+}
+/* Define la fuente principal del sitio */
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f2f2f2;
+}
+
+/* Estilo para el header */
+/* Header inicial */
+header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: #4a90e2;
+    padding: 20px 100px; /* Espaciado inicial */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom-left-radius: 80px;
+    border-bottom-right-radius: 80px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    height: 120px;
+    transition: all 0.3s ease-in-out; /* Transición suave */
+}
+
+/* Header reducido */
+header.shrink {
+    padding: 10px 80px; /* Reduce el padding */
+    height: 80px; /* Reduce la altura */
+    background-color: #4a90e2; /* Fondo más transparente */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2); /* Sombras más suaves */
+}
+
+/* Otros estilos existentes */
+.logo img {
+    width: 152px;
+    height: auto;
+    z-index: 2;
+    transition: transform 0.3s ease, width 0.3s ease; /* Transición de zoom y tamaño */
+}
+
+header.shrink .logo img {
+    width: 120px; /* Reduce el tamaño del logo */
+}
+
+nav {
+    display: flex;
+    gap: 30px;
+    z-index: 2;
+}
+
+nav a {
+    text-decoration: none;
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 20px;
+    background-color: #66a3ff;
+    border: none;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+nav a:hover {
+    background-color: #1d6fd8;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(-3px);
+}
+#contact-info {
+    position: absolute;
+    top: 10px;
+    right: 20px;
+}
+
+#calendar-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px;
+}
+
+#event-list-container {
+    width: 25%;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-radius: 5px;
+}
+
+#event-list-container ul {
+    list-style: none;
+    padding: 0;
+}
+
+.event {
+    margin: 5px 0;
+    padding: 5px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.event.dragging {
+    opacity: 0.5;
+}
+
+#create-event-container {
+    margin-top: 20px;
+}
+
+#create-event-container input[type="text"] {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+#create-event-container select {
+    width: 100%;
+    padding: 5px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+#create-event-container button {
+    width: 100%;
+    padding: 5px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#create-event-container button:hover {
+    background-color: #45a049;
+}
+
+#calendar-table {
+    width: 70%;
+    border-collapse: collapse;
+    margin-left: 170px;
+}
+
+#calendar-table th,
+#calendar-table td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+    vertical-align: top;
+}
+
+#calendar-table th {
+    font-weight: bold;
+    background-color: #f2f2f2;
+    text-align: center;
+    padding: 10px;
+}
+
+.droppable {
+    min-height: 100px;
+    position: relative;
+}
+
+.event-inside {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    width: 90%;
+}
+
+/* Estilos para los iconos en el header */
+.header-icons {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.header-icons a {
+    display: inline-block;
+    margin-left: 15px;
+}
+
+.header-icons img {
+    width: 70px;
+    /* Aumentar el tamaño de los íconos */
+    height: 70px;
+    /* Aumentar el tamaño de los íconos */
+    cursor: pointer;
+}
+
+#calendar-table-container {
+    width: 100%;
+    /* Ajusta según el tamaño que desees */
+    margin: 0 auto;
+    /* Centra el calendario */
+
+}
+
+#calendar-navigation {
+    display: flex;
+    justify-content: center;
+    /* Centra los elementos horizontalmente */
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+#calendar-navigation button {
+    background-color: transparent;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+#month-name {
+    margin: 0 15px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* Nuevo diseño del título */
+.header-title {
+    font-size: 1.8rem;
+    /* Tamaño de letra más pequeño */
+    font-weight: bold;
+    color: #ffffff;
+    /* Azul intermedio */
+    margin-top: 5px;
+    font-family: 'Arial', sans-serif;
+    /* Cambio de fuente */
+    position: relative;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    /* Sombra suave */
+    margin-left: -33px;
+    /* Ajuste hacia la izquierda */
+}
+
+/* Animación al pasar el mouse */
+.header-title:hover {
+    color: #e2b94a;
+    /* Cambia el texto a dorado */
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.4);
+    /* Aumenta el efecto de sombra */
+    transition: all 0.3s ease;
+}
+
+.header-title:hover:before {
+    background-color: #4A90E2;
+    /* Cambia la línea a azul */
+    transition: background-color 0.3s ease;
+}
+
 #contact-info {
     position: absolute;
     top: 10px;

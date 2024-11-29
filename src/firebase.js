@@ -1,8 +1,25 @@
-import { getFirestore, collection, getDocs, addDoc, updateDoc, doc } from 'firebase/firestore';
-import { app } from './firebaseConfig';  // Asegúrate de importar tu instancia de Firebase
+import { getFirestore, doc, getDoc, collection, getDocs, addDoc, updateDoc } from 'firebase/firestore';
+import { app } from './firebaseConfig';  // Importa tu configuración de Firebase
+import { getAuth } from 'firebase/auth';
+
 
 // Inicializar Firestore
 const db = getFirestore(app);
+const auth = getAuth();
+const user = auth.currentUser;
+
+if (user) {
+  const usuarioId = user.uid;  // Obtén el ID del usuario autenticado
+  console.log("Usuario autenticado", usuarioId);
+  try {
+    const userData = await cargarUsuarioPorId(usuarioId);
+    console.log("Datos del usuario:", userData);
+  } catch (error) {
+    console.log("Error al cargar los datos del usuario:", error);
+  }
+} else {
+  console.log("No hay usuario autenticado");
+}
 
 // Función para agregar una mascota
 export const agregarMascota = async (mascota) => {
@@ -30,11 +47,33 @@ export const marcarMascotaAdoptada = async (id) => {
 // Función para cargar todos los usuarios
 export const cargarUsuarios = async () => {
     const usuarios = [];
-    const querySnapshot = await getDocs(collection(db, 'usuarios'));
-    querySnapshot.forEach((doc) => {
-        usuarios.push({ id: doc.id, ...doc.data() });
-    });
+    try {
+        const querySnapshot = await getDocs(collection(db, 'usuarios'));
+        console.log('querySnapshot:', querySnapshot); // Verifica que se obtienen datos
+        querySnapshot.forEach((doc) => {
+            console.log('usuario:', doc.data());  // Verifica los datos de cada documento
+            usuarios.push({ id: doc.id, ...doc.data() });
+        });
+    } catch (error) {
+        console.error("Error cargando usuarios:", error);
+    }
     return usuarios;
+};
+// Función para cargar los datos de un usuario por su ID
+export const cargarUsuarioPorId = async (id) => {
+    const usuarioRef = doc(db, 'usuarios', id);  // Obtén la referencia al documento del usuario
+    try {
+        const docSnapshot = await getDoc(usuarioRef);  // Obtén los datos del documento
+        if (docSnapshot.exists()) {
+            return docSnapshot.data();  // Si el documento existe, retorna los datos
+        } else {
+            console.log("No se encontró el usuario con ese ID");
+            return null;
+        }
+    } catch (error) {
+        console.error("Error al cargar los datos del usuario:", error);
+        throw error;
+    }
 };
 
 // Función para cargar todas las mascotas
